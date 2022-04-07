@@ -21,7 +21,12 @@ async def on_ready():
 
 @bot.event
 async def on_message(message):
-    if message.content == "/help":
-        await message.channel.send("Bem vindo ao Garun BOT!\n")
+    if message.content == "$help":
+        message_help = message.channel.send(f"Olá {message.author}! Seja bem vindo ao Garun BOT!\n")
+        
+        await message_help
+    
+    if message.author == bot.user and "Seja bem vindo" in message.content:
+        await message.add_reaction('❤️')
 
 bot.run(TOKEN)
