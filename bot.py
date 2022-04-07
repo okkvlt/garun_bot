@@ -22,44 +22,37 @@ async def on_ready():
 @bot.event
 async def on_message(message):
     if message.content == "$help":
-        
-        help_message = f"""
-Olá {message.author}! Seja bem vindo ao Garun BOT!
+        embed_help = discord.Embed(colour=0xedd58d)
 
-Segue a lista de comandos para o uso do bot:
+        embed_help.set_author(name="Garun — Help",
+                              icon_url='https://i.imgur.com/59qD9SY.jpg')
 
-$help: mostra essa mensagem;
+        embed_help.add_field(name="Comandos de DJ", value="""
+`$play (music/playlist)` — *reproduz a música ou a playlist.*
+`$queue` — *mostra lista de reprodução.*
+`$pause` — *pausa a música.*
+`$resume` — *despausa a música.*
+`$stop` — *para de reproduzir.*
+`$next` — *avança para a próxima música.*
+`$back` — *retorna para a música anterior.*
+`$shuffle` — *ativa ordem aleatória.*
+`$goto (n)` — *avança ou retorna para a música da posição n da lista de reprodução.*
+`$clear` — *limpa a lista de reprodução.*
+`$add (music/playlist)` — *adiciona música ou playlist na lista de reprodução.*
+`$remove (n)` — *remove música da posição n da lista de reprodução.*
+""", inline=False)
 
-DJ:
+        embed_help.add_field(name="Comandos de LAST.FM", value="""
+`$connect` — *conecta do last.fm com o bot.*
+`$scrobble (on/off)` — *ativa ou desativa os scrobbles.*
+`$edit` — *edita os dados do scrobble em execução.*
+`$skip` — *interrompe o scrobble em execução.*
+`$disconnect` — *desconecta a conta.*
+""", inline=False)
 
-$play [spotify music/playlist]: reproduz a música ou playlist passada por argumento;
-$queue: mostra a lista de reprodução;
-$pause: pausa a reprodução;
-$resume: despausa a reprodução;
-$stop: desconecta o bot da call;
-$next: avança para a próxima música;
-$back: retorna para a música passada;
-$goto [n]: avança ou retorna para a música da posição n da lista;
-$clear: limpa a lista de reprodução;
-$add [spotify music/playlist]: adiciona música ou playlist na lista de reprodução;
-$remove [n]: remove a música da posição n da lista;
-$volume [0-100]: altera o volume do bot;
+        embed_help.set_footer(
+            text=f"Powered by {bot.user}", icon_url='https://i.imgur.com/59qD9SY.jpg')
 
-LAST.FM:
-
-$connect: conecta o BOT com sua conta do last.fm;
-$scrobble [on/off]: ativa/desativa o modo scrobble;
-$edit: edita os dados do scrobble em execução;
-$skip: interrompe o scrobble em execução;
-$disconnect: desconecta o BOT da sua conta do last.fm;
-"""
-        
-        message_help = message.channel.send(help_message)
-        
-        await message_help
-    
-    if message.author == bot.user and "Seja bem vindo" in message.content:
-        await message.add_reaction('❤️')
-        await message.add_reaction('🕊️')
+        await message.channel.send(embed=embed_help)
 
 bot.run(TOKEN)
