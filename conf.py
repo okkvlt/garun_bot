@@ -1,5 +1,4 @@
 from decouple import config
-import pylast
 
 # discord
 TOKEN = config('BOT_TOKEN')

@@ -27,6 +27,8 @@ async def on_message(message):
 
         embed_help.add_field(name="Comandos de LAST.FM", value="""
 `$connect` — *conecta do last.fm com o bot.*
+`$top_artists (user) (n) (overall/7day/1month/12month)` — *mostra o top (n) artistas do usuário no(s) último(s) (overall/7day/1month/12month).*
+`$top_albums (user) (n) (overall/7day/1month/12month)` — *mostra o top (n) albums do usuário no(s) último(s) (overall/7day/1month/12month).*
 `$scrobble (on/off)` — *ativa ou desativa os scrobbles.*
 `$edit` — *edita os dados do scrobble em execução.*
 `$skip` — *interrompe o scrobble em execução.*
