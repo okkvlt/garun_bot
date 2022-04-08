@@ -1,8 +1,8 @@
 import discord
-
 import requests
-from conf import API_KEY
+from hashlib import md5
 from bot import bot
+from conf import API_KEY, API_SECRET
 
 
 def get_token():
@@ -10,6 +10,16 @@ def get_token():
         "https://ws.audioscrobbler.com/2.0/?method=auth.gettoken&api_key="+API_KEY+"&format=json")
 
     return r.json()["token"]
+
+
+def get_session(token):
+    sig = md5(("api_key"+API_KEY+"methodauth.getSessiontoken" +
+              token+API_SECRET).encode()).hexdigest()
+
+    r = requests.get(
+        "https://ws.audioscrobbler.com/2.0/?method=auth.getSession&api_key="+API_KEY+"&token="+token+"&api_sig="+sig+"&format=json")
+
+    return r.json()
 
 
 def get_topArtists(user, n, time):
@@ -26,85 +36,5 @@ def get_topAlbums(user, n, time):
     return r.json()
 
 
-def top(message, id):
-    data = message.content.split()
-
-    embed_last = discord.Embed(colour=0xedd58d)
-
-    embed_last.set_author(name="Garun — Top albums",
-                          icon_url='https://i.imgur.com/59qD9SY.jpg')
-
-    embed_last.set_footer(
-        text=f"Powered by {bot.user}", icon_url='https://i.imgur.com/59qD9SY.jpg')
-
-    if len(data) != 4:
-        embed_last.add_field(name="Status", value="""
-*Formato inválido!*
-""", inline=False)
-
-        if id == 1:
-            embed_last.add_field(name="Utilize:", value="""
-`$top_albums (user) (n) (overall/7days/1month/12month)`
-    """, inline=False)
-        else:
-            embed_last.add_field(name="Utilize:", value="""
-`$top_artists (user) (n) (overall/7days/1month/12month)`
-""", inline=False)
-
-        embed_last.add_field(name="Parâmetros:", value="""
-**user:** *usuário.*
-**n:** *top (n).*
-**(overall/7day/1month/12month):** *período de tempo.*
-""", inline=False)
-
-        return message.channel.send(embed=embed_last)
-
-    user = data[1]
-    n = data[2]
-    time = data[3]
-
-    if id == 1:
-        r = get_topAlbums(user, n, time)
-    else:
-        r = get_topArtists(user, n, time)
-
-    if not "error" in r:
-        if id == 1:
-            top = r["topalbums"]["album"]
-
-            embed_last.set_author(name="Garun — Top "+n+" albums",
-                                  icon_url='https://i.imgur.com/59qD9SY.jpg')
-
-        else:
-            top = r["topartists"]["artist"]
-
-            embed_last.set_author(name="Garun — Top "+n+" artistas",
-                                  icon_url='https://i.imgur.com/59qD9SY.jpg')
-
-        value = ""
-
-        if id == 1:
-            for album in top:
-                value += "**"+album["@attr"]["rank"]+"º**: *"+album["artist"]["name"]+" — " + \
-                    album["name"]+" ("+album["playcount"]+" plays).*\n"
-        else:
-            for artist in top:
-                value += "**"+artist["@attr"]["rank"]+"º** — *" + \
-                    artist["name"]+" ("+artist["playcount"]+" plays).*\n"
-
-        embed_last.add_field(
-            name="Usuário: ", value="`"+user+"`", inline=False)
-
-        if id == 1:
-            embed_last.add_field(name="Top "+str(n) +
-                                 " albums", value=value, inline=False)
-        else:
-            embed_last.add_field(name="Top "+str(n) +
-                                 " artistas", value=value, inline=False)
-
-        return message.channel.send(embed=embed_last)
-
-    embed_last.add_field(name="Status", value="Erro: " +
-                         str(r["error"])+"\nMensagem: `"+r["message"]+"`", inline=False)
-
-    return message.channel.send(embed=embed_last)
+# def scrobbleTrack():
+    # print(get_session("D7Q7QxoZXsfTmBxQZz8JGfWbIm1mojvR"))
