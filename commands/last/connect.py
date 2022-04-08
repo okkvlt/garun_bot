@@ -1,7 +1,7 @@
 import discord
 import pylast
 from bot import bot
-from conf import API_KEY, API_SECRET, LAST_USER, LAST_PASS
+from conf import API_KEY, API_SECRET
 
 
 @bot.event
