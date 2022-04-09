@@ -2,6 +2,7 @@ import discord
 from bot import bot
 from commands.last.top import top
 from commands.last.auth import auth, session
+from commands.last.scrobble import scrobble
 
 @bot.event
 async def on_message(message):
@@ -16,3 +17,6 @@ async def on_message(message):
     
     if "$session" in message.content:
         return await session(message)
+    
+    if "$scrobble" in message.content:
+        return await scrobble(message)

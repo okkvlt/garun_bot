@@ -39,11 +39,22 @@ async def session(message):
     embed_last = getEmbed()
 
     data = message.content.split()
+
     if len(data) != 2:
-        return print("a")
+        embed_last.add_field(name="Status", value="""
+**Erro:** """ + """*é necessário informar (apenas) o token.*
+**Ex.: ** *$session bCXd57FOYxy5Z6cTxla5GIDlc0UejQlO*""")
+        
+        return await message.author.send(embed=embed_last)
 
     token = data[1]
-    r = get_session(token)
+
+    params = {"api_key": API_KEY,
+              "method": "auth.getSession",
+              "token": token}
+
+    sig = get_signature(params)
+    r = get_session(token, sig)
 
     if not "error" in r:
         embed_last.add_field(
@@ -53,7 +64,7 @@ async def session(message):
 
         arq = open(".sessions", "a")
         arq.write(str(message.author.id)+" " +
-                  s["name"]+" "+s["key"]+" "+get_signature(token)+"\n")
+                  s["name"]+" "+s["key"]+"\n")
         arq.close()
 
         return await message.author.send(embed=embed_last)
