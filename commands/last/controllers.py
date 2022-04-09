@@ -1,7 +1,7 @@
 import discord
 from bot import bot
 from commands.last.top import top
-from commands.last.auth import auth
+from commands.last.auth import auth, session
 
 @bot.event
 async def on_message(message):
@@ -11,5 +11,8 @@ async def on_message(message):
     if "$top_albums" in message.content:
         return await top(message, 1)
 
-    if "$connect" in message.content:
+    if message.content == "$connect":
         return await auth(message)
+    
+    if "$session" in message.content:
+        return await session(message)

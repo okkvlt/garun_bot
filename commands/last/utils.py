@@ -38,3 +38,15 @@ def get_topAlbums(user, n, time):
 
 # def scrobbleTrack():
     # print(get_session("D7Q7QxoZXsfTmBxQZz8JGfWbIm1mojvR"))
+
+
+def getEmbed():
+    embed = discord.Embed(colour=0xedd58d)
+
+    embed.set_author(name="Garun — Last.fm",
+                          icon_url='https://i.imgur.com/59qD9SY.jpg')
+
+    embed.set_footer(
+        text=f"Powered by {bot.user}", icon_url='https://i.imgur.com/59qD9SY.jpg')
+    
+    return embed
