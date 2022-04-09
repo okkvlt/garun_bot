@@ -1,17 +1,11 @@
 import discord
 from bot import bot
-from commands.last.utils import get_topAlbums, get_topArtists
+from commands.last.utils import get_topAlbums, get_topArtists, getEmbed
 
 async def top(message, id):
     data = message.content.split()
 
-    embed_last = discord.Embed(colour=0xedd58d)
-
-    embed_last.set_author(name="Garun — Top albums",
-                          icon_url='https://i.imgur.com/59qD9SY.jpg')
-
-    embed_last.set_footer(
-        text=f"Powered by {bot.user}", icon_url='https://i.imgur.com/59qD9SY.jpg')
+    embed_last = getEmbed()
 
     if len(data) != 4:
         embed_last.add_field(name="Status", value="""
