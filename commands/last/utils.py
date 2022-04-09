@@ -1,6 +1,7 @@
+from hashlib import md5
+
 import discord
 import requests
-from hashlib import md5
 from bot import bot
 from conf import API_KEY, API_SECRET
 
@@ -47,6 +48,7 @@ def get_topAlbums(user, n, time):
 
     return r.json()
 
+
 def getEmbed():
     embed = discord.Embed(colour=0xedd58d)
 
@@ -57,7 +59,6 @@ def getEmbed():
         text=f"Powered by {bot.user}", icon_url='https://i.imgur.com/59qD9SY.jpg')
 
     return embed
-
 
 
 def scrobbleTrack(message, artist, track, time):
@@ -85,23 +86,23 @@ def scrobbleTrack(message, artist, track, time):
             "sk": sk}
 
     sig = get_signature(data)
-    
+
     data["timestamp"] = time
     data["api_sig"] = sig
 
     r = requests.post("http://ws.audioscrobbler.com/2.0/", data=data)
-    
+
     embed_last = getEmbed()
 
     if 'accepted="1"' in r.text:
         embed_last.add_field(name="Sucesso", value="""
 *Scrobble de `"""+artist+""" - """+track+"""` feito com êxito!*
 """, inline=False)
-        
+
         return embed_last
-    
+
     embed_last.add_field(name="Erro", value="""
 *Falha no scrobble de `"""+artist+""" - """+track+"""`.*
 """, inline=False)
-    
+
     return embed_last

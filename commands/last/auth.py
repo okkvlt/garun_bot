@@ -1,7 +1,8 @@
 from string import hexdigits
+
 import discord
 from bot import bot
-from commands.last.utils import get_token, get_session, getEmbed, get_signature
+from commands.last.utils import get_session, get_signature, get_token, getEmbed
 from conf import API_KEY, API_SECRET
 
 
@@ -44,7 +45,7 @@ async def session(message):
         embed_last.add_field(name="Status", value="""
 **Erro:** """ + """*é necessário informar (apenas) o token.*
 **Ex.: ** *$session bCXd57FOYxy5Z6cTxla5GIDlc0UejQlO*""")
-        
+
         return await message.author.send(embed=embed_last)
 
     token = data[1]
