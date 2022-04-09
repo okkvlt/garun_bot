@@ -11,10 +11,14 @@ def get_token():
 
     return r.json()["token"]
 
-
-def get_session(token):
+def get_signature(token):
     sig = md5(("api_key"+API_KEY+"methodauth.getSessiontoken" +
               token+API_SECRET).encode()).hexdigest()
+    
+    return sig
+
+def get_session(token):
+    sig = get_signature(token)
 
     r = requests.get(
         "https://ws.audioscrobbler.com/2.0/?method=auth.getSession&api_key="+API_KEY+"&token="+token+"&api_sig="+sig+"&format=json")
@@ -36,8 +40,23 @@ def get_topAlbums(user, n, time):
     return r.json()
 
 
-# def scrobbleTrack():
-    # print(get_session("D7Q7QxoZXsfTmBxQZz8JGfWbIm1mojvR"))
+def scrobbleTrack(message):
+    arq = open(".session", "r")
+    for auth in arq:
+        auth = auth.split()
+        if auth[0] == message.author.id:
+            did = auth[0]
+            user = auth[1]
+            sk = auth[2]
+            sig = auth[3]
+    
+    arq.close()
+    
+    if not did:
+        return "Usuário `"+user+"` não autenticado!"
+
+    #r = requests.post("http://ws.audioscrobbler.com/2.0/", )
+    #continue
 
 
 def getEmbed():
