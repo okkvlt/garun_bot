@@ -25,7 +25,7 @@ async def scrobble(message):
 
     if data[1] == "on":
         try:
-            if check_auth_sessions(message.author.id) == 1:
+            if check_auth_sessions(message.author.id, 1) == 1:
 
                 ex.execute(
                     "UPDATE users SET scrobbling = 1 WHERE id = "+str(message.author.id))
@@ -49,7 +49,7 @@ async def scrobble(message):
     
     elif data[1] == "off":
         try:
-            if check_auth_sessions(message.author.id) == 1:
+            if check_auth_sessions(message.author.id, 1) == 1:
 
                 ex.execute(
                     "UPDATE users SET scrobbling = 0 WHERE id = "+str(message.author.id))
@@ -79,9 +79,3 @@ async def scrobble(message):
 """)
 
     return await message.channel.send(embed=embed)
-
-    """artist = "Yung Lean"
-    track = "Ginseng Strip 2002"
-    timestamp = int(time.time())
-
-    return await message.channel.send(embed=scrobbleTrack(message, artist, track, timestamp))"""

@@ -24,7 +24,7 @@ def insert_session(id, last_user, session_key):
 
     return 1
 
-def check_auth_sessions(id):
+def check_auth_sessions(id, mode):
     c = sqlite3.connect(DB)
     ex = c.cursor()
 
@@ -46,7 +46,10 @@ def check_auth_sessions(id):
     c.commit()
     c.close()
     
-    return check
+    if mode == 1:
+        return check
+    else:
+        return count
 
 
 def get_token():
@@ -108,23 +111,16 @@ def scrobbleTrack(message, artist, track, time):
     c = sqlite3.connect(DB)
     ex = c.cursor()
 
+    if check_auth_sessions(message.author.id, 1) != 1:
+        return "Você não está autenticado!"
+
+    count = check_auth_sessions(message.author.id, 2)
+
     try:
         rows = ex.execute("SELECT * FROM users")
         users = rows.fetchall()
     except Exception as error:
         return str(error)
-
-    count = 0
-    check = 0
-
-    for user in users:
-        if message.author.id == user[0]:
-            check = 1
-            break
-        count += 1
-
-    if check == 0:
-        return "Você não está autenticado!"
 
     sk = users[count][2]
 
