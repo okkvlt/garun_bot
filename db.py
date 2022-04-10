@@ -8,7 +8,7 @@ ex = c.cursor()
 try:
     ex.execute("CREATE TABLE users (id, last_user, session_key, scrobbling)")
 except Exception as error:
-    if str(error) != "table user already exists":
+    if str(error) != "table users already exists":
         print("Erro ao criar banco de dados: "+str(error))
     
 c.commit()

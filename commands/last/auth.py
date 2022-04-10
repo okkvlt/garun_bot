@@ -60,16 +60,23 @@ async def session(message):
 
     if not "error" in r:
         embed_last.add_field(
-            name="Status", value="Vínculo realizado com sucesso!")
+            name="Status", value="*Vínculo realizado com sucesso!*")
 
         s = r["session"]
-        
+
         id = message.author.id
         last_user = s["name"]
         session_key = s["key"]
 
-        insert_session(id, last_user, session_key)
-        
+        if insert_session(id, last_user, session_key) != 1:
+            embed_last.add_field(
+                name="Banco de Dados", value="""
+***Erro** ao salvar sessão no banco de dados!*
+**Erro: ** *`"""+str(insert_session(id, last_user, session_key))+"""`*""", inline=False)
+            return await message.author.send(embed=embed_last)
+
+        embed_last.add_field(
+            name="Banco de Dados", value="*Sessão salva com êxito no banco de dados!*", inline=False)
         return await message.author.send(embed=embed_last)
 
     embed_last.add_field(name="Status", value="**Erro:** " +

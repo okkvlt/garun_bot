@@ -17,7 +17,7 @@ def insert_session(id, last_user, session_key):
         ex.execute("INSERT INTO users VALUES ("+str(id)+", '" +
                    last_user+"', '"+session_key+"', 0)")
     except Exception as error:
-        print(error)
+        return error
 
     c.commit()
     c.close()
