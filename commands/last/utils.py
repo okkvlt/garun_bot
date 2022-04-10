@@ -24,6 +24,30 @@ def insert_session(id, last_user, session_key):
 
     return 1
 
+def check_auth_sessions(id):
+    c = sqlite3.connect(DB)
+    ex = c.cursor()
+
+    try:
+        rows = ex.execute("SELECT * FROM users")
+        users = rows.fetchall()
+    except Exception as error:
+        return str(error)
+
+    count = 0
+    check = 0
+
+    for user in users:
+        if id == user[0]:
+            check = 1
+            break
+        count += 1
+
+    c.commit()
+    c.close()
+    
+    return check
+
 
 def get_token():
     r = requests.get(
@@ -91,6 +115,7 @@ def scrobbleTrack(message, artist, track, time):
         return str(error)
 
     count = 0
+    check = 0
 
     for user in users:
         if message.author.id == user[0]:
