@@ -1,7 +1,7 @@
 import discord
 from bot import bot
 from commands.last.auth import auth, disconnect, session
-from commands.last.scrobble import scrobble
+from commands.last.scrobble import hydra, scrobble
 from commands.last.top import top
 
 
@@ -24,3 +24,6 @@ async def on_message(message):
 
     if message.content == "$disconnect":
         return await disconnect(message)
+
+    if message.author.name == "Hydra":
+        return await hydra(message)

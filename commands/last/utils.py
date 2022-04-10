@@ -1,7 +1,5 @@
-from hashlib import md5
 import sqlite3
-
-from sympy import EX
+from hashlib import md5
 
 import discord
 import requests
@@ -24,15 +22,49 @@ def insert_session(id, last_user, session_key):
 
     return 1
 
-def check_auth_sessions(id, mode):
+
+def get_users():
     c = sqlite3.connect(DB)
     ex = c.cursor()
 
     try:
         rows = ex.execute("SELECT * FROM users")
         users = rows.fetchall()
+
+        c.commit()
+        c.close()
+
+        return users
     except Exception as error:
         return str(error)
+
+
+def get_scrobblers():
+    c = sqlite3.connect(DB)
+    ex = c.cursor()
+
+    try:
+        users = {}
+
+        rows = ex.execute("SELECT * FROM users WHERE scrobbling = 1")
+        data = rows.fetchall()
+
+        for user in data:
+            users[user[0]] = user[1]
+
+        c.commit()
+        c.close()
+
+        return users
+    except Exception as error:
+        return str(error)
+
+
+def check_auth_sessions(id, mode):
+    c = sqlite3.connect(DB)
+    ex = c.cursor()
+
+    users = get_users()
 
     count = 0
     check = 0
@@ -45,7 +77,7 @@ def check_auth_sessions(id, mode):
 
     c.commit()
     c.close()
-    
+
     if mode == 1:
         return check
     else:
@@ -107,51 +139,70 @@ def getEmbed():
     return embed
 
 
-def scrobbleTrack(message, artist, track, time):
+def scrobbleTrack(id_dict, artist, track, time):
     c = sqlite3.connect(DB)
     ex = c.cursor()
 
-    if check_auth_sessions(message.author.id, 1) != 1:
-        return "Você não está autenticado!"
+    if len(id_dict) > 0:
+        done = []
+        fail = []
 
-    count = check_auth_sessions(message.author.id, 2)
+        for session in id_dict:
+            id = session
+            acc = id_dict[session]
 
-    try:
-        rows = ex.execute("SELECT * FROM users")
-        users = rows.fetchall()
-    except Exception as error:
-        return str(error)
+            count = check_auth_sessions(id, 2)
 
-    sk = users[count][2]
+            try:
+                rows = ex.execute("SELECT * FROM users")
+                users = rows.fetchall()
+            except Exception as error:
+                return str(error)
 
-    data = {"artist": artist,
-            "track": track,
-            "timestamp": str(time),
-            "method": "track.scrobble",
-            "api_key": API_KEY,
-            "sk": sk}
+            sk = users[count][2]
 
-    sig = get_signature(data)
+            data = {"artist": artist,
+                    "track": track,
+                    "timestamp": str(time),
+                    "method": "track.scrobble",
+                    "api_key": API_KEY,
+                    "sk": sk}
 
-    data["timestamp"] = time
-    data["api_sig"] = sig
+            sig = get_signature(data)
 
-    r = requests.post("http://ws.audioscrobbler.com/2.0/", data=data)
+            data["timestamp"] = time
+            data["api_sig"] = sig
 
-    embed_last = getEmbed()
-    
-    c.commit()
-    c.close()
+            r = requests.post("http://ws.audioscrobbler.com/2.0/", data=data)
 
-    if 'accepted="1"' in r.text:
-        embed_last.add_field(name="Sucesso", value="""
-*Scrobble de `"""+artist+""" - """+track+"""` feito com êxito!*
-""", inline=False)
+            embed_last = getEmbed()
+
+            c.commit()
+            c.close()
+
+            if 'accepted="1"' in r.text:
+                done.append(acc)
+            else:
+                fail.append(acc)
+
+        done_acc = ""
+        fail_acc = ""
+
+        for acc in done:
+            done_acc += acc+" | "
+
+        for acc in fail:
+            fail_acc += acc+" | "
+
+        if done_acc != "":
+            embed_last.add_field(name="Status", value="""
+    *Scrobble de `"""+artist+""" - """+track+"""` feito com êxito!*
+    Contas: *| """+done_acc+"""*
+    """, inline=False)
+
+        if fail_acc != "":
+            embed_last.add_field(name="Aviso", value="""
+    *Falha ao scrobblar para: | """+fail_acc+"""*
+    """, inline=False)
 
         return embed_last
-
-    embed_last.add_field(name="Erro", value="""
-*Falha no scrobble de `"""+artist+""" - """+track+"""`.*
-""", inline=False)
-
-    return embed_last

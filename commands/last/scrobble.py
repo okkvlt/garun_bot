@@ -1,11 +1,11 @@
-import time
+import re
 import sqlite3
+import time
 
 import discord
 from bot import bot
-from commands.last.utils import check_auth_sessions, getEmbed, scrobbleTrack
-from psycopg2 import Timestamp
-
+from commands.last.utils import (check_auth_sessions, get_scrobblers, getEmbed,
+                                 scrobbleTrack)
 from conf import DB
 
 
@@ -46,7 +46,7 @@ async def scrobble(message):
 *Erro ao ativar scrobbling.*
 **Erro:** *`"""+str(error)+"""`.*
 """)
-    
+
     elif data[1] == "off":
         try:
             if check_auth_sessions(message.author.id, 1) == 1:
@@ -79,3 +79,27 @@ async def scrobble(message):
 """)
 
     return await message.channel.send(embed=embed)
+
+
+async def hydra(message):
+    for embed in message.embeds:
+        content = embed.to_dict()
+
+        try:
+            title = content["title"]
+
+            if title == "Now playing":
+                description = content["description"]
+
+                artist = re.search(".+-", description).group(0)[:-2]
+                track = re.search("-.+", description).group(0)[2:]
+
+                timestamp = int(time.time())
+
+                scrobblers = get_scrobblers()  # DICT
+
+                if len(scrobblers) > 0:
+                    return await message.channel.send(embed=scrobbleTrack(scrobblers, artist, track, timestamp))
+        except Exception as error:
+            print(str(error))
+            continue

@@ -32,6 +32,8 @@ async def on_message(message):
 `$scrobble (on/off)` — *ativa ou desativa os scrobbles.*
 `$edit` — *edita os dados do scrobble em execução.*
 `$skip` — *interrompe o scrobble em execução.*
+`$love` — *dá "amei" na música em execução.*
+`$unlove` — *retira o "amei" da música em execução.*
 `$collage (artists/albums) (7/30)` — *gera uma colagem com os artistas ou albums mais ouvidos nos últimos sete ou trinta dias.*
 `$disconnect` — *desconecta a conta.*
 """, inline=False)
