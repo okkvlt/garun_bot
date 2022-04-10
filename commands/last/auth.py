@@ -1,8 +1,9 @@
+import sqlite3
 from string import hexdigits
 
 import discord
 from bot import bot
-from commands.last.utils import get_session, get_signature, get_token, getEmbed
+from commands.last.utils import get_session, get_signature, get_token, getEmbed, insert_session
 from conf import API_KEY, API_SECRET
 
 
@@ -62,12 +63,13 @@ async def session(message):
             name="Status", value="Vínculo realizado com sucesso!")
 
         s = r["session"]
+        
+        id = message.author.id
+        last_user = s["name"]
+        session_key = s["key"]
 
-        arq = open(".sessions", "a")
-        arq.write(str(message.author.id)+" " +
-                  s["name"]+" "+s["key"]+"\n")
-        arq.close()
-
+        insert_session(id, last_user, session_key)
+        
         return await message.author.send(embed=embed_last)
 
     embed_last.add_field(name="Status", value="**Erro:** " +

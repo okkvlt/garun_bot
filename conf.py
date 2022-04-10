@@ -6,3 +6,6 @@ TOKEN = config('BOT_TOKEN')
 # last.fm api
 API_KEY = config('API_KEY')
 API_SECRET = config('API_SECRET')
+
+# database
+DB = "sessions.db"

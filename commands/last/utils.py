@@ -1,9 +1,28 @@
 from hashlib import md5
+import sqlite3
+
+from sympy import EX
 
 import discord
 import requests
 from bot import bot
-from conf import API_KEY, API_SECRET
+from conf import API_KEY, API_SECRET, DB
+
+
+def insert_session(id, last_user, session_key):
+    c = sqlite3.connect(DB)
+    ex = c.cursor()
+
+    try:
+        ex.execute("INSERT INTO users VALUES ("+str(id)+", '" +
+                   last_user+"', '"+session_key+"', 0)")
+    except Exception as error:
+        print(error)
+
+    c.commit()
+    c.close()
+
+    return 1
 
 
 def get_token():
@@ -62,21 +81,27 @@ def getEmbed():
 
 
 def scrobbleTrack(message, artist, track, time):
-    arq = open(".sessions", "r")
+    c = sqlite3.connect(DB)
+    ex = c.cursor()
 
-    check = 0
+    try:
+        rows = ex.execute("SELECT * FROM users")
+        users = rows.fetchall()
+    except Exception as error:
+        return str(error)
 
-    for auth in arq:
-        auth = auth.split()
-        if auth[0] == str(message.author.id):
+    count = 0
+
+    for user in users:
+        if message.author.id == user[0]:
             check = 1
-
-    arq.close()
+            break
+        count += 1
 
     if check == 0:
         return "Você não está autenticado!"
 
-    sk = auth[2]
+    sk = users[count][2]
 
     data = {"artist": artist,
             "track": track,
@@ -93,6 +118,9 @@ def scrobbleTrack(message, artist, track, time):
     r = requests.post("http://ws.audioscrobbler.com/2.0/", data=data)
 
     embed_last = getEmbed()
+    
+    c.commit()
+    c.close()
 
     if 'accepted="1"' in r.text:
         embed_last.add_field(name="Sucesso", value="""
