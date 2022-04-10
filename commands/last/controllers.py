@@ -1,6 +1,6 @@
 import discord
 from bot import bot
-from commands.last.auth import auth, session
+from commands.last.auth import auth, disconnect, session
 from commands.last.scrobble import scrobble
 from commands.last.top import top
 
@@ -21,3 +21,6 @@ async def on_message(message):
 
     if "$scrobble" in message.content:
         return await scrobble(message)
+
+    if message.content == "$disconnect":
+        return await disconnect(message)

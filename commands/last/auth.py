@@ -3,8 +3,8 @@ from string import hexdigits
 
 import discord
 from bot import bot
-from commands.last.utils import get_session, get_signature, get_token, getEmbed, insert_session
-from conf import API_KEY, API_SECRET
+from commands.last.utils import check_auth_sessions, get_session, get_signature, get_token, getEmbed, insert_session
+from conf import API_KEY, API_SECRET, DB
 
 
 async def auth(message):
@@ -83,3 +83,41 @@ async def session(message):
                          str(r["error"])+" — *`"+r["message"]+"`.*")
 
     return await message.author.send(embed=embed_last)
+
+async def disconnect(message):
+    embed = getEmbed()
+    
+    if check_auth_sessions(message.author.id, 1) != 1:
+        embed.add_field(name="Status — Erro", value="""
+**Erro:** *é preciso estar autenticado para se desconectar!*
+""", inline=False)
+        
+        if not isinstance(message.channel, discord.channel.DMChannel):
+            return await message.channel.send(embed=embed)
+        return await message.author.send(embed=embed)
+    
+    c = sqlite3.connect(DB)
+    ex = c.cursor()
+    
+    try:
+        ex.execute("DELETE FROM users WHERE id = "+str(message.author.id))
+        
+        c.commit()
+        c.close()
+    
+        embed.add_field(name="Status", value="""
+*Sua conta foi desvinculada com sucesso!*
+""", inline=False)
+        
+        if not isinstance(message.channel, discord.channel.DMChannel):
+            return await message.channel.send(embed=embed)
+        return await message.author.send(embed=embed)
+        
+    except Exception as error:
+        embed.add_field(name="Status — Erro", value="""
+**Erro:** *`"""+str(error)+"""`*
+""", inline=False)
+        
+        if not isinstance(message.channel, discord.channel.DMChannel):
+            return await message.channel.send(embed=embed)
+        return await message.author.send(embed=embed)
