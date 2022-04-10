@@ -12,9 +12,9 @@ async def auth(message):
 
     if not isinstance(message.channel, discord.channel.DMChannel):
         embed_last.add_field(name="Status", value="""
-Utilize comunicação privada para enviar informações da conta!
-Informações enviadas via privado...
-""", inline=False)
+        Utilize comunicação privada para enviar informações da conta!
+        Informações enviadas via privado...
+        """, inline=False)
 
         await message.channel.send(embed=embed_last)
 
@@ -22,17 +22,17 @@ Informações enviadas via privado...
     token = get_token()
 
     embed_last.add_field(name="**Vincule a conta**", value="""
-*[http://www.last.fm/api/auth/?api_key="""+API_KEY+"""&token="""+token+"""]*
+    *[http://www.last.fm/api/auth/?api_key="""+API_KEY+"""&token="""+token+"""]*
 
-**1º** - *Clique no link acima.*
-**2º** - *Autorize o acesso do BOT à sua conta.*
-""", inline=False)
+    **1º** - *Clique no link acima.*
+    **2º** - *Autorize o acesso do BOT à sua conta.*
+    """, inline=False)
 
     embed_last.add_field(name="**Ative a sessão**", value="""
-**Digite:** $session `"""+token+"""`
+    **Digite:** $session `"""+token+"""`
 
-**Após isso, o BOT estará vinculado!**
-""", inline=False)
+    **Após isso, o BOT estará vinculado!**
+    """, inline=False)
 
     return await message.author.send(embed=embed_last)
 
@@ -44,8 +44,9 @@ async def session(message):
 
     if len(data) != 2:
         embed_last.add_field(name="Status", value="""
-**Erro:** """ + """*é necessário informar (apenas) o token.*
-**Ex.: ** *$session bCXd57FOYxy5Z6cTxla5GIDlc0UejQlO*""")
+        **Erro:** """ + """*é necessário informar (apenas) o token.*
+        **Ex.: ** *$session bCXd57FOYxy5Z6cTxla5GIDlc0UejQlO*
+        """)
 
         return await message.author.send(embed=embed_last)
 
@@ -59,8 +60,7 @@ async def session(message):
     r = get_session(token, sig)
 
     if not "error" in r:
-        embed_last.add_field(
-            name="Status", value="*Vínculo realizado com sucesso!*")
+        embed_last.add_field(name="Status", value="*Vínculo realizado com sucesso!*")
 
         s = r["session"]
 
@@ -69,10 +69,9 @@ async def session(message):
         session_key = s["key"]
 
         if insert_session(id, last_user, session_key) != 1:
-            embed_last.add_field(
-                name="Banco de Dados", value="""
-***Erro** ao salvar sessão no banco de dados!*
-**Erro: ** *`"""+str(insert_session(id, last_user, session_key))+"""`*""", inline=False)
+            embed_last.add_field(name="Banco de Dados", value="""
+            ***Erro** ao salvar sessão no banco de dados!*
+            **Erro: ** *`"""+str(insert_session(id, last_user, session_key))+"""`*""", inline=False)
             return await message.author.send(embed=embed_last)
 
         embed_last.add_field(
@@ -89,8 +88,8 @@ async def disconnect(message):
     
     if check_auth_sessions(message.author.id, 1) != 1:
         embed.add_field(name="Status — Erro", value="""
-**Erro:** *é preciso estar autenticado para se desconectar!*
-""", inline=False)
+        **Erro:** *é preciso estar autenticado para se desconectar!*
+        """, inline=False)
         
         if not isinstance(message.channel, discord.channel.DMChannel):
             return await message.channel.send(embed=embed)
@@ -106,8 +105,8 @@ async def disconnect(message):
         c.close()
     
         embed.add_field(name="Status", value="""
-*Sua conta foi desvinculada com sucesso!*
-""", inline=False)
+        *Sua conta foi desvinculada com sucesso!*
+        """, inline=False)
         
         if not isinstance(message.channel, discord.channel.DMChannel):
             return await message.channel.send(embed=embed)
@@ -115,8 +114,8 @@ async def disconnect(message):
         
     except Exception as error:
         embed.add_field(name="Status — Erro", value="""
-**Erro:** *`"""+str(error)+"""`*
-""", inline=False)
+        **Erro:** *`"""+str(error)+"""`*
+        """, inline=False)
         
         if not isinstance(message.channel, discord.channel.DMChannel):
             return await message.channel.send(embed=embed)

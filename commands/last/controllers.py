@@ -3,6 +3,7 @@ from bot import bot
 from commands.last.auth import auth, disconnect, session
 from commands.last.scrobble import hydra, scrobble
 from commands.last.top import top
+from commands.last.utils import get_trackImage
 
 
 @bot.event

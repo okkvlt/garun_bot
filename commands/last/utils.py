@@ -139,6 +139,13 @@ def getEmbed():
     return embed
 
 
+
+def get_trackImage(artist, track):
+    r = requests.get("https://ws.audioscrobbler.com/2.0/?method=track.getInfo&api_key="+API_KEY+"&artist="+artist+"&track="+track+"&format=json")
+    data = r.json()
+    
+    return data["track"]["album"]["image"][3]["#text"]
+
 def scrobbleTrack(id_dict, artist, track, time):
     c = sqlite3.connect(DB)
     ex = c.cursor()
@@ -195,14 +202,20 @@ def scrobbleTrack(id_dict, artist, track, time):
             fail_acc += acc+" | "
 
         if done_acc != "":
+            embed_last.set_thumbnail(url=get_trackImage(artist, track))
+            
             embed_last.add_field(name="Status", value="""
-    *Scrobble de `"""+artist+""" - """+track+"""` feito com êxito!*
-    Contas: *| """+done_acc+"""*
-    """, inline=False)
+            *Scrobble realizado com sucesso!*
+            *| """+done_acc+"""*
+            """, inline=False)
+            
+            embed_last.add_field(name="Artista", value=artist, inline=False)
+            
+            embed_last.add_field(name="Música", value=track, inline=False)
 
         if fail_acc != "":
             embed_last.add_field(name="Aviso", value="""
-    *Falha ao scrobblar para: | """+fail_acc+"""*
-    """, inline=False)
+            *Falha ao scrobblar para: | """+fail_acc+"""*
+            """, inline=False)
 
         return embed_last
