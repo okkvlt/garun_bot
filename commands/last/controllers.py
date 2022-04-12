@@ -3,7 +3,7 @@ from bot import bot
 from commands.last.auth import auth, disconnect, session
 from commands.last.scrobble import hydra, scrobble
 from commands.last.top import top
-from commands.last.utils import get_trackImage
+from commands.last.help import help_
 
 
 @bot.event
@@ -28,3 +28,5 @@ async def on_message(message):
 
     if message.author.name == "Hydra":
         return await hydra(message)
+    if message.content == "$help":
+        return await help_(message)
