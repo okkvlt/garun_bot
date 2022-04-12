@@ -17,4 +17,10 @@ BOT para auxiliar no scrobbling de músicas escutadas em canais de voz no discor
 
 ![02](https://i.imgur.com/DGMcqAM.png)
 
+## ▪ Scrobbling
+
+![01](https://i.imgur.com/V38eiZl.png)
+
+![02](https://i.imgur.com/aQYFYhs.png)
+
 \~ Coded by okkvlt.
