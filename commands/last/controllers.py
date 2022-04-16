@@ -3,7 +3,8 @@ from bot import bot
 from commands.last.auth import auth, disconnect, session
 from commands.last.scrobble import hydra, scrobble
 from commands.last.top import top
-from commands.last.help import help_
+from commands.last.help import help_message
+from commands.last.love import love_track
 
 
 @bot.event
@@ -29,4 +30,8 @@ async def on_message(message):
     if message.author.name == "Hydra":
         return await hydra(message)
     if message.content == "$help":
-        return await help_(message)
+        return await help_message(message)
+    if "$love" in message.content:
+        return await love_track(message, 1)
+    if "$unlove" in message.content:
+        return await love_track(message, 2)
