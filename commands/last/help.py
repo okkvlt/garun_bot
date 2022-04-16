@@ -16,8 +16,8 @@ async def help_(message):
 `$scrobble (on/off)` — *Ativa ou desativa os scrobbles.*
 `$edit` — *Edita os dados do scrobble em execução.* [não implementado]
 `$stop` — *Interrompe o scrobble em execução.* [não implementado]
-`$love` — *Dá "amei" na música em execução.* [não implementado]
-`$unlove` — *Retira o "amei" da música em execução.* [não implementado]
+`$love [music id]` — *Dá "amei" na música em execução.* [não implementado]
+`$unlove [music id]` — *Retira o "amei" da música em execução.* [não implementado]
 `$collage (artists/albums) (7/30)` — *Gera uma colagem com os artistas ou albums mais ouvidos nos últimos sete ou trinta dias.* [não implementado]
 `$disconnect` — *Desconecta a conta.*
 """, inline=False)
