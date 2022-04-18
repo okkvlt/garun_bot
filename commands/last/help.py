@@ -1,14 +1,12 @@
 import discord
 from bot import bot
+from commands.last.utils import getEmbed
 
 
 async def help_message(message):
-    embed_help = discord.Embed(colour=0xedd58d)
+    embed = getEmbed()
 
-    embed_help.set_author(name="Garun — Help",
-                          icon_url='https://i.imgur.com/59qD9SY.jpg')
-
-    embed_help.add_field(name="Comandos de LAST.FM", value="""
+    embed.add_field(name="Comandos de LAST.FM", value="""
 • `$connect`
 • *Vincula o bot à sua conta do last.fm.*
 
@@ -40,7 +38,4 @@ async def help_message(message):
 • *Desconecta a conta.*
 """, inline=False)
 
-    embed_help.set_footer(
-        text=f"Powered by {bot.user}", icon_url='https://i.imgur.com/59qD9SY.jpg')
-
-    await message.channel.send(embed=embed_help)
+    await message.channel.send(embed=embed)
