@@ -90,8 +90,8 @@ async def hydra(message):
             if title == "Now playing":
                 description = content["description"]
 
-                artist = re.search(".+-", description).group(0)[:-2]
                 track = re.search("-.+", description).group(0)[2:]
+                artist = description.replace(track,"")[:-3]
 
                 timestamp = int(time.time())
 
