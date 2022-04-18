@@ -129,28 +129,29 @@ def scrobbleTrack(id_dict, artist, track, time):
             else:
                 fail.append(acc)
 
-        done_acc = ""
-        fail_acc = ""
+        done_acc = "| "
+        fail_acc = "| "
 
         for acc in done:
-            done_acc += acc+" | "
+            done_acc += "*"+acc+"* | "
 
         for acc in fail:
-            fail_acc += acc+" | "
+            fail_acc += "*"+acc+"* | "
 
-        if done_acc != "":
+        if done_acc != "| ":
             embed_last.set_thumbnail(url=get_trackImage(artist, track))
 
             embed_last.add_field(name="Status", value="""
             *Scrobble realizado com sucesso!*
-            *| """+done_acc+"""*
             """, inline=False)
 
             embed_last.add_field(name="Artista", value=artist, inline=False)
 
             embed_last.add_field(name="Música", value=track, inline=False)
+            
+            embed_last.add_field(name="Ouvintes", value=done_acc, inline=False)
 
-        if fail_acc != "":
+        if fail_acc != "| ":
             embed_last.add_field(name="Aviso", value="""
             *Falha ao scrobblar para: | """+fail_acc+"""*
             """, inline=False)
