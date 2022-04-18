@@ -6,6 +6,7 @@ BOT para auxiliar no scrobbling de músicas escutadas em canais de voz no discor
 ## ▪ Bots Compatíveis
 
 - Hydra;
+- Em breve, mais...
 
 ## ▪ Funções
 
@@ -22,5 +23,12 @@ BOT para auxiliar no scrobbling de músicas escutadas em canais de voz no discor
 ![01](https://i.imgur.com/V38eiZl.png)
 
 ![02](https://i.imgur.com/aQYFYhs.png)
+
+## ▪ Updates
+
+- Editar e interromper scrobble reagindo à mensagem do bot!
+- Dar ou retirar amei no scrobble em execução reagindo à mensagem do bot!
+
+- Player próprio de música!
 
 \~ Coded by okkvlt.
