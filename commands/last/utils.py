@@ -3,6 +3,7 @@ from hashlib import md5
 
 import discord
 import requests
+import xmltodict
 from bot import bot
 from conf import API_KEY, API_SECRET, DB
 
@@ -37,6 +38,23 @@ def get_users():
         return users
     except Exception as error:
         return str(error)
+
+
+def get_sk(id):
+    c = sqlite3.connect(DB)
+    ex = c.cursor()
+
+    count = check_auth_sessions(id, 2)
+
+    try:
+        rows = ex.execute("SELECT * FROM users")
+        users = rows.fetchall()
+    except Exception as error:
+        return str(error)
+
+    sk = users[count][2]
+
+    return sk
 
 
 def get_scrobblers():
@@ -139,17 +157,58 @@ def getEmbed():
     return embed
 
 
+def loveTrack(id, artist, track, mode):
+    sk = get_sk(id)
+
+    data = {"artist": artist,
+            "track": track,
+            "api_key": API_KEY,
+            "sk": sk}
+
+    if mode == 1:
+        data["method"] = "track.love"
+    else:
+        data["method"] = "track.unlove"
+
+    sig = get_signature(data)
+
+    data["api_sig"] = sig
+
+    r = requests.post("https://ws.audioscrobbler.com/2.0/", params=data)
+
+    status = xmltodict.parse(r.text)["lfm"]["@status"]
+    embed = getEmbed()
+
+    if status == "ok":
+        embed.set_thumbnail(url=get_trackImage(artist, track))
+
+        if mode == 1:
+            embed.add_field(name="Status", value="""
+            *Você amou **'"""+track+"""'** de **'"""+artist+"""'** com sucesso!*
+            """, inline=False)
+        else:
+            embed.add_field(name="Status", value="""
+            *Você retirou seu 'amei' de **'"""+track+"""'** de **'"""+artist+"""'** com sucesso!*
+            """, inline=False)
+            
+        return embed
+
+    embed.add_field(name="Status", value="""
+    *Falha ao realizar esta ação.*
+    **Erro:** *"""+xmltodict.parse(r.text)["lfm"]["error"]["#text"]+"""*
+    """, inline=False)
+    return embed
+
 
 def get_trackImage(artist, track):
-    r = requests.get("https://ws.audioscrobbler.com/2.0/?method=track.getInfo&api_key="+API_KEY+"&artist="+artist+"&track="+track+"&format=json")
+    r = requests.get("https://ws.audioscrobbler.com/2.0/?method=track.getInfo&api_key=" +
+                     API_KEY+"&artist="+artist+"&track="+track+"&format=json")
     data = r.json()
-    
+
     return data["track"]["album"]["image"][3]["#text"]
 
-def scrobbleTrack(id_dict, artist, track, time):
-    c = sqlite3.connect(DB)
-    ex = c.cursor()
 
+def scrobbleTrack(id_dict, artist, track, time):
     if len(id_dict) > 0:
         done = []
         fail = []
@@ -158,15 +217,7 @@ def scrobbleTrack(id_dict, artist, track, time):
             id = session
             acc = id_dict[session]
 
-            count = check_auth_sessions(id, 2)
-
-            try:
-                rows = ex.execute("SELECT * FROM users")
-                users = rows.fetchall()
-            except Exception as error:
-                return str(error)
-
-            sk = users[count][2]
+            sk = get_sk(id)
 
             data = {"artist": artist,
                     "track": track,
@@ -184,9 +235,6 @@ def scrobbleTrack(id_dict, artist, track, time):
 
             embed_last = getEmbed()
 
-            c.commit()
-            c.close()
-
             if 'accepted="1"' in r.text:
                 done.append(acc)
             else:
@@ -203,14 +251,14 @@ def scrobbleTrack(id_dict, artist, track, time):
 
         if done_acc != "":
             embed_last.set_thumbnail(url=get_trackImage(artist, track))
-            
+
             embed_last.add_field(name="Status", value="""
             *Scrobble realizado com sucesso!*
             *| """+done_acc+"""*
             """, inline=False)
-            
+
             embed_last.add_field(name="Artista", value=artist, inline=False)
-            
+
             embed_last.add_field(name="Música", value=track, inline=False)
 
         if fail_acc != "":
