@@ -10,23 +10,23 @@ async def top(message, id):
 
     if len(data) != 4:
         embed_last.add_field(name="Status", value="""
-*Formato inválido!*
-""", inline=False)
+        *Formato inválido!*
+        """, inline=False)
 
         if id == 1:
             embed_last.add_field(name="Utilize:", value="""
-`$top_albums (user) (n) (overall/7days/1month/12month)`
-    """, inline=False)
+            `$top_albums (user) (n) (overall/7days/1month/12month)`
+            """, inline=False)
         else:
             embed_last.add_field(name="Utilize:", value="""
-`$top_artists (user) (n) (overall/7days/1month/12month)`
-""", inline=False)
+            `$top_artists (user) (n) (overall/7days/1month/12month)`
+            """, inline=False)
 
         embed_last.add_field(name="Parâmetros:", value="""
-**user:** *usuário.*
-**n:** *top (n).*
-**(overall/7day/1month/12month):** *período de tempo.*
-""", inline=False)
+        **user:** *usuário.*
+        **n:** *top (n).*
+        **(overall/7day/1month/12month):** *período de tempo.*
+        """, inline=False)
 
         return await message.channel.send(embed=embed_last)
 

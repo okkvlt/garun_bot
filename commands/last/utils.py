@@ -149,12 +149,12 @@ def get_top(user, n, time, mode):
               "limit": n,
               "period": time,
               "format": "json"}
-    
+
     if mode == 1:
         params["method"] = "user.gettopartists"
     else:
         params["method"] = "user.gettopalbums"
-    
+
     r = requests.get("https://ws.audioscrobbler.com/2.0/",
                      params=params)
 
