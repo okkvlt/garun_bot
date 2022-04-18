@@ -1,7 +1,5 @@
 import re
 
-from bot import bot
-from conf import DB
 from utils.auth import check_auth_sessions
 from utils.others import getEmbed, loveTrack
 

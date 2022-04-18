@@ -3,8 +3,8 @@ from hashlib import md5
 import discord
 import requests
 import xmltodict
-from bot import bot
-from conf import API_KEY
+from config.bot import bot
+from config.config import API_KEY
 
 from utils.auth import get_signature
 from utils.database import get_sk

@@ -1,4 +1,3 @@
-from bot import bot
 from utils.others import get_top, getEmbed
 
 

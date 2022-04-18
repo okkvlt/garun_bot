@@ -8,4 +8,4 @@ API_KEY = config('API_KEY')
 API_SECRET = config('API_SECRET')
 
 # database
-DB = "sessions.db"
+DB = "config/sessions.db"

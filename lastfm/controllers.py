@@ -1,5 +1,5 @@
 import discord
-from bot import bot
+from config.bot import bot
 
 from lastfm.auth import auth, disconnect, session
 from lastfm.help import help_message

@@ -2,8 +2,7 @@ import re
 import sqlite3
 import time
 
-from bot import bot
-from conf import DB
+from config.config import DB
 from utils.auth import check_auth_sessions
 from utils.database import get_scrobblers
 from utils.others import getEmbed, scrobbleTrack

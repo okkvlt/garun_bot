@@ -2,8 +2,7 @@ import sqlite3
 from hashlib import md5
 
 import requests
-from bot import bot
-from conf import API_KEY, API_SECRET, DB
+from config.config import API_KEY, API_SECRET, DB
 
 
 def get_users():

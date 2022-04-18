@@ -1,8 +1,6 @@
 import sqlite3
-from hashlib import md5
 
-from bot import bot
-from conf import DB
+from config.config import DB
 
 from utils.auth import check_auth_sessions
 

@@ -1,6 +1,4 @@
-import discord
-from bot import bot
-from conf import DB
+from config.bot import bot
 from utils.auth import get_users
 
 

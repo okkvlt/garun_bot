@@ -1,6 +1,6 @@
 from codecs import ignore_errors
 import sqlite3
-from conf import DB
+from config.config import DB
 
 c = sqlite3.connect(DB)
 ex = c.cursor()
