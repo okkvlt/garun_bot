@@ -103,10 +103,16 @@ def check_auth_sessions(id, mode):
 
 
 def get_token():
-    r = requests.get(
-        "https://ws.audioscrobbler.com/2.0/?method=auth.gettoken&api_key="+API_KEY+"&format=json")
+    params = {"method": "auth.gettoken",
+              "api_key": API_KEY,
+              "format": "json"}
 
-    return r.json()["token"]
+    r = requests.get("https://ws.audioscrobbler.com/2.0/",
+                     params=params)
+
+    token = r.json()["token"]
+
+    return token
 
 
 def get_signature(params):
@@ -125,22 +131,32 @@ def get_signature(params):
 
 
 def get_session(token, sig):
-    r = requests.get(
-        "https://ws.audioscrobbler.com/2.0/?method=auth.getSession&api_key="+API_KEY+"&token="+token+"&api_sig="+sig+"&format=json")
+    params = {"method": "auth.getSession",
+              "api_key": API_KEY,
+              "token": token,
+              "api_sig": sig,
+              "format": "json"}
+
+    r = requests.get("https://ws.audioscrobbler.com/2.0/",
+                     params=params)
 
     return r.json()
 
 
-def get_topArtists(user, n, time):
-    r = requests.get("https://ws.audioscrobbler.com/2.0/?method=user.gettopartists&user=" +
-                     user+"&api_key="+API_KEY+"&limit="+n+"&period="+time+"&format=json")
-
-    return r.json()
-
-
-def get_topAlbums(user, n, time):
-    r = requests.get("https://ws.audioscrobbler.com/2.0/?method=user.gettopalbums&user=" +
-                     user+"&api_key="+API_KEY+"&limit="+n+"&period="+time+"&format=json")
+def get_top(user, n, time, mode):
+    params = {"api_key": API_KEY,
+              "user": user,
+              "limit": n,
+              "period": time,
+              "format": "json"}
+    
+    if mode == 1:
+        params["method"] = "user.gettopartists"
+    else:
+        params["method"] = "user.gettopalbums"
+    
+    r = requests.get("https://ws.audioscrobbler.com/2.0/",
+                     params=params)
 
     return r.json()
 
@@ -149,10 +165,10 @@ def getEmbed():
     embed = discord.Embed(colour=0xedd58d)
 
     embed.set_author(name="Garun — Last.fm",
-                          icon_url='https://i.imgur.com/59qD9SY.jpg')
+                     icon_url='https://i.imgur.com/59qD9SY.jpg')
 
-    embed.set_footer(
-        text=f"Powered by {bot.user}", icon_url='https://i.imgur.com/59qD9SY.jpg')
+    embed.set_footer(text=f"Powered by {bot.user}",
+                     icon_url='https://i.imgur.com/59qD9SY.jpg')
 
     return embed
 
@@ -174,7 +190,8 @@ def loveTrack(id, artist, track, mode):
 
     data["api_sig"] = sig
 
-    r = requests.post("https://ws.audioscrobbler.com/2.0/", params=data)
+    r = requests.post("https://ws.audioscrobbler.com/2.0/",
+                      params=data)
 
     status = xmltodict.parse(r.text)["lfm"]["@status"]
     embed = getEmbed()
@@ -190,7 +207,7 @@ def loveTrack(id, artist, track, mode):
             embed.add_field(name="Status", value="""
             *Você retirou seu 'amei' de **'"""+track+"""'** de **'"""+artist+"""'** com sucesso!*
             """, inline=False)
-            
+
         return embed
 
     embed.add_field(name="Status", value="""
@@ -201,8 +218,13 @@ def loveTrack(id, artist, track, mode):
 
 
 def get_trackImage(artist, track):
-    r = requests.get("https://ws.audioscrobbler.com/2.0/?method=track.getInfo&api_key=" +
-                     API_KEY+"&artist="+artist+"&track="+track+"&format=json")
+    params = {"method": "track.getInfo",
+              "api_key": API_KEY,
+              "artist": artist,
+              "track": track,
+              "format": "json"}
+
+    r = requests.get("https://ws.audioscrobbler.com/2.0/", params=params)
     data = r.json()
 
     return data["track"]["album"]["image"][3]["#text"]

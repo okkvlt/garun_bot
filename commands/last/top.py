@@ -1,6 +1,7 @@
 import discord
 from bot import bot
-from commands.last.utils import get_topAlbums, get_topArtists, getEmbed
+from commands.last.utils import get_top, getEmbed
+
 
 async def top(message, id):
     data = message.content.split()
@@ -34,9 +35,9 @@ async def top(message, id):
     time = data[3]
 
     if id == 1:
-        r = get_topAlbums(user, n, time)
+        r = get_top(user, n, time, 2)
     else:
-        r = get_topArtists(user, n, time)
+        r = get_top(user, n, time, 1)
 
     if not "error" in r:
         if id == 1:
