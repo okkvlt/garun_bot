@@ -1,10 +1,11 @@
 import discord
 from bot import bot
-from commands.last.auth import auth, disconnect, session
-from commands.last.scrobble import hydra, scrobble
-from commands.last.top import top
-from commands.last.help import help_message
-from commands.last.love import love_track
+
+from lastfm.auth import auth, disconnect, session
+from lastfm.help import help_message
+from lastfm.love import love_track
+from lastfm.scrobble import hydra, scrobble
+from lastfm.top import top
 
 
 @bot.event

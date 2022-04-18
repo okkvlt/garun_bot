@@ -1,19 +1,14 @@
 import re
-import sqlite3
-import time
 
-import discord
 from bot import bot
-from commands.last.utils import check_auth_sessions, getEmbed, loveTrack
 from conf import DB
+from utils.auth import check_auth_sessions
+from utils.others import getEmbed, loveTrack
 
 
 async def love_track(message, mode):
     data = message.content.split()
     embed = getEmbed()
-
-    c = sqlite3.connect(DB)
-    ex = c.cursor()
 
     if len(data) == 1:
         embed.add_field(name="Status — Erro", value="""

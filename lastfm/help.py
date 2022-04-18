@@ -1,6 +1,5 @@
-import discord
 from bot import bot
-from commands.last.utils import getEmbed
+from utils.others import getEmbed
 
 
 async def help_message(message):

@@ -2,11 +2,11 @@ import re
 import sqlite3
 import time
 
-import discord
 from bot import bot
-from commands.last.utils import (check_auth_sessions, get_scrobblers, getEmbed,
-                                 scrobbleTrack)
 from conf import DB
+from utils.auth import check_auth_sessions
+from utils.database import get_scrobblers
+from utils.others import getEmbed, scrobbleTrack
 
 
 async def scrobble(message):

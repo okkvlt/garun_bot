@@ -1,6 +1,5 @@
-import discord
 from bot import bot
-from commands.last.utils import get_top, getEmbed
+from utils.others import get_top, getEmbed
 
 
 async def top(message, id):
