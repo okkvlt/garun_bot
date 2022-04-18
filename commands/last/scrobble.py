@@ -30,7 +30,7 @@ async def scrobble(message):
                 ex.execute(
                     "UPDATE users SET scrobbling = 1 WHERE id = "+str(message.author.id))
                 embed.add_field(name="Status", value="""
-                *Atividade de Scrobbling **ativada!***
+                *Scrobbling **ativado!***
                 """)
                 c.commit()
                 c.close()
@@ -54,7 +54,7 @@ async def scrobble(message):
                 ex.execute(
                     "UPDATE users SET scrobbling = 0 WHERE id = "+str(message.author.id))
                 embed.add_field(name="Status", value="""
-                *Atividade de Scrobbling **desativada!***
+                *Scrobbling **desativado!***
                 """)
                 c.commit()
                 c.close()
