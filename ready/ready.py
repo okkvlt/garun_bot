@@ -1,9 +1,7 @@
 import discord
 from bot import bot
-from conf import DB
 from commands.last.utils import get_users
-
-import os
+from conf import DB
 
 
 @bot.event
