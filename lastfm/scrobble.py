@@ -21,7 +21,7 @@ async def scrobble_on_off(message):
         **Exemplo: ** *`$scrobble on`* ou *`$scrobble off`.*
         """)
 
-        return await message.channel.send(embed=embed)
+        return await message.channel.send(embed=embed, delete_after=30)
 
     if check_auth_sessions(message.author.id, 1) != 1:
         embed.add_field(name="Status — Erro", value="""
@@ -29,7 +29,7 @@ async def scrobble_on_off(message):
         **Conecte-se:** *`$connect`*
         """)
 
-        return await message.channel.send(embed=embed)
+        return await message.channel.send(embed=embed, delete_after=30)
 
     if data[1] == "on":
         try:
@@ -62,7 +62,7 @@ async def scrobble_on_off(message):
         **Exemplo: ** *`$scrobble on`* ou *`$scrobble off`.*
         """)
 
-    return await message.channel.send(embed=embed)
+    return await message.channel.send(embed=embed, delete_after=30)
 
 
 async def hydra(message):
