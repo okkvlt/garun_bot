@@ -7,6 +7,8 @@ from config.config import API_KEY
 from utils.auth import get_signature
 from utils.database import get_sk
 
+api = "https://ws.audioscrobbler.com/2.0/"
+
 
 def get_top(user, n, time, mode):
     params = {"api_key": API_KEY,
@@ -20,8 +22,7 @@ def get_top(user, n, time, mode):
     else:
         params["method"] = "user.gettopalbums"
 
-    r = requests.get("https://ws.audioscrobbler.com/2.0/",
-                     params=params)
+    r = requests.get(api, params=params)
 
     return r.json()
 
@@ -55,30 +56,29 @@ def loveTrack(id, artist, track, mode):
 
     data["api_sig"] = sig
 
-    r = requests.post("https://ws.audioscrobbler.com/2.0/",
-                      params=data)
+    r = requests.post(api, params=data)
 
     status = xmltodict.parse(r.text)["lfm"]["@status"]
     embed = getEmbed()
 
-    if status == "ok":
-        embed.set_thumbnail(url=get_trackImage(artist, track))
-
-        if mode == 1:
-            embed.add_field(name="Status", value="""
-            *Você amou **'"""+track+"""'** de **'"""+artist+"""'** com sucesso!*
-            """, inline=False)
-        else:
-            embed.add_field(name="Status", value="""
-            *Você retirou seu 'amei' de **'"""+track+"""'** de **'"""+artist+"""'** com sucesso!*
-            """, inline=False)
-
+    if status != "ok":
+        embed.add_field(name="Status", value="""
+        *Falha ao realizar esta ação.*
+        **Erro:** *"""+xmltodict.parse(r.text)["lfm"]["error"]["#text"]+"""*
+        """, inline=False)
         return embed
 
-    embed.add_field(name="Status", value="""
-    *Falha ao realizar esta ação.*
-    **Erro:** *"""+xmltodict.parse(r.text)["lfm"]["error"]["#text"]+"""*
-    """, inline=False)
+    embed.set_thumbnail(url=get_trackImage(artist, track))
+
+    if mode == 1:
+        embed.add_field(name="Status", value="""
+        *Você amou **'"""+track+"""'** de **'"""+artist+"""'** com sucesso!*
+        """, inline=False)
+    else:
+        embed.add_field(name="Status", value="""
+        *Você retirou seu 'amei' de **'"""+track+"""'** de **'"""+artist+"""'** com sucesso!*
+        """, inline=False)
+
     return embed
 
 
@@ -89,86 +89,71 @@ def get_trackImage(artist, track):
               "track": track,
               "format": "json"}
 
-    r = requests.get("https://ws.audioscrobbler.com/2.0/", params=params)
-    data = r.json()
+    r = requests.get(api, params=params)
+    data = r.json()["track"]["album"]["image"][3]["#text"]
 
-    return data["track"]["album"]["image"][3]["#text"]
+    return data
 
 
-def nowPlaying_and_Scrobble(id_dict, artist, track, time, mode):
-    if len(id_dict) > 0:
-        done = []
-        fail = []
+def nowPlayingScrobble(id_dict, artist, track, time, mode):
+    if not len(id_dict) > 0:
+        return
 
-        for session in id_dict:
-            id = session
-            acc = id_dict[session]
+    sucess = "| "
+    fail = "| "
 
-            sk = get_sk(id)
+    for id in id_dict:
+        acc = id_dict[id]
 
-            if mode == 1:
-                data = {"artist": artist,
-                        "track": track,
-                        "method": "track.updateNowPlaying",
-                        "duration": "60",
-                        "api_key": API_KEY,
-                        "sk": sk}
+        sk = get_sk(id)
 
-                sig = get_signature(data)
+        if mode == 1:
+            data = {"artist": artist,
+                    "track": track,
+                    "method": "track.updateNowPlaying",
+                    "duration": "60",
+                    "api_key": API_KEY,
+                    "sk": sk}
 
-            else:
-                data = {"artist": artist,
-                        "track": track,
-                        "method": "track.scrobble",
-                        "timestamp": str(time),
-                        "api_key": API_KEY,
-                        "sk": sk}
+            sig = get_signature(data)
 
-                sig = get_signature(data)
-                data["timestamp"] = time
+        else:
+            data = {"artist": artist,
+                    "track": track,
+                    "method": "track.scrobble",
+                    "timestamp": str(time),
+                    "api_key": API_KEY,
+                    "sk": sk}
 
-            data["api_sig"] = sig
+            sig = get_signature(data)
+            data["timestamp"] = time
 
-            r = requests.post("http://ws.audioscrobbler.com/2.0/", data=data)
+        data["api_sig"] = sig
 
-            embed_last = getEmbed()
+        r = requests.post(api, data=data)
+        xml = xmltodict.parse(r.text)
 
-            if 'status="ok"' in r.text:
-                done.append(acc)
-            else:
-                fail.append(acc)
+        if xml["lfm"]["@status"] != "ok":
+            fail += acc + " | "
+        else:
+            sucess += acc + " | "
 
-        done_acc = "| "
-        fail_acc = "| "
+    embed = getEmbed()
+    embed.set_thumbnail(url=get_trackImage(artist, track))
 
-        for acc in done:
-            done_acc += "*"+acc+"* | "
+    if sucess != "| ":
+        if mode == 1:
+            embed.add_field(name="Status", value="*Scrobbling...!*", inline=False)
+        else:
+            embed.add_field(name="Status", value="*Scrobbling bem sucedido!*", inline=False)
 
-        for acc in fail:
-            fail_acc += "*"+acc+"* | "
+        embed.add_field(name="Artista", value=artist, inline=False)
 
-        if done_acc != "| ":
-            embed_last.set_thumbnail(url=get_trackImage(artist, track))
+        embed.add_field(name="Música", value=track, inline=False)
 
-            if mode == 1:
-                embed_last.add_field(name="Status", value="""
-                *Scrobbling...!*
-                """, inline=False)
-            else:
-                embed_last.add_field(name="Status", value="""
-                *Scrobbling bem sucedido!*
-                """, inline=False)
+        embed.add_field(name="Scrobblers", value=sucess, inline=False)
 
-            embed_last.add_field(name="Artista", value=artist, inline=False)
+    if fail != "| ":
+        embed.add_field(name="Fail", value=fail, inline=False)
 
-            embed_last.add_field(name="Música", value=track, inline=False)
-
-            embed_last.add_field(
-                name="Scrobblers", value=done_acc, inline=False)
-
-        if fail_acc != "| ":
-            embed_last.add_field(name="Aviso", value="""
-            *Falha ao scrobblar para: | """+fail_acc+"""*
-            """, inline=False)
-
-        return embed_last
+    return embed

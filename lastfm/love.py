@@ -30,7 +30,7 @@ async def love_track(message, mode):
         return
     
     try:
-        return await message.channel.send(embed=loveTrack(author_id, artist, track, mode))
+        return await message.channel.send(embed=loveTrack(author_id, artist, track, mode), delete_after=15)
     except Exception as error:
         embed.add_field(name="Status — Erro", value="""
         **Erro:** *"""+str(error)+"""*

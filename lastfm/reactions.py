@@ -31,7 +31,7 @@ async def check_reactions(reaction, user, mode):
     track = fields["fields"][2]["value"]
 
     if str(reaction) == '❤️':
-        return await msg.channel.send(embed=loveTrack(user.id, artist, track, mode))
+        return await msg.channel.send(embed=loveTrack(user.id, artist, track, mode), delete_after=15)
 
     if str(reaction) == '🚫':
         embed = getEmbed()

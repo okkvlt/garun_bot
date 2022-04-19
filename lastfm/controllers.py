@@ -5,7 +5,7 @@ from lastfm.auth import auth, disconnect, session
 from lastfm.help import help_message
 from lastfm.love import love_track
 from lastfm.reactions import check_reactions, reaction
-from lastfm.scrobble import hydra, scrobble, scrobble_track, tempo
+from lastfm.scrobble import hydra, scrobble_after_delete, scrobble_on_off, tempo
 from lastfm.top import top
 
 
@@ -24,7 +24,7 @@ async def on_message(message):
         return await session(message)
 
     if "$scrobble" in message.content:
-        return await scrobble(message)
+        return await scrobble_on_off(message)
 
     if message.content == "$disconnect":
         return await disconnect(message)
@@ -63,4 +63,4 @@ async def on_reaction_remove(reaction, user):
 @bot.event
 async def on_message_delete(message):
     if message.author.id == bot.user.id:
-        return await scrobble_track(message)
+        return await scrobble_after_delete(message)

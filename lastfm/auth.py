@@ -1,7 +1,7 @@
 import sqlite3
 
 import discord
-from config.config import API_KEY, API_SECRET, DB
+from config.config import API_KEY, DB
 from utils.auth import (check_auth_sessions, get_session, get_signature,
                         get_token)
 from utils.database import insert_session
