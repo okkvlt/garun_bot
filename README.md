@@ -27,8 +27,7 @@ BOT para auxiliar no scrobbling de músicas escutadas em canais de voz no discor
 
 ## ▪ Próximos Updates
 
-- Editar e interromper scrobble reagindo à mensagem do bot!
-- Dar ou retirar amei no scrobble em execução reagindo à mensagem do bot!
+- Editar scrobble reagindo à mensagem do bot!
 - Player próprio de música!
 
 \~ Coded by okkvlt.
