@@ -130,7 +130,6 @@ def nowPlaying_and_Scrobble(id_dict, artist, track, time, mode):
             data["api_sig"] = sig
 
             r = requests.post("http://ws.audioscrobbler.com/2.0/", data=data)
-            print(r.text)
 
             embed_last = getEmbed()
 

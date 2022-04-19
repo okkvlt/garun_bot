@@ -1,15 +1,13 @@
 import discord
-import time
 from config.bot import bot
+from config.config import HYDRA, TEMPO
 
 from lastfm.auth import auth, disconnect, session
 from lastfm.help import help_message
 from lastfm.love import love_track
-from lastfm.scrobble import hydra, reaction, scrobble, tempo
+from lastfm.reactions import check_reactions, reaction
+from lastfm.scrobble import hydra, scrobble, scrobble_track, tempo
 from lastfm.top import top
-
-from utils.others import nowPlaying_and_Scrobble
-from utils.database import get_scrobblers
 
 
 @bot.event
@@ -32,7 +30,7 @@ async def on_message(message):
     if message.content == "$disconnect":
         return await disconnect(message)
 
-    if message.author.id == 547905866255433758: ##HYDRA ID
+    if message.author.id == HYDRA:
         return await hydra(message)
 
     if message.content == "$help":
@@ -44,34 +42,24 @@ async def on_message(message):
     if "$unlove" in message.content:
         return await love_track(message, 2)
 
-    if message.author.id == 736888501026422855: ##TEMPO ID
+    if message.author.id == TEMPO:
         return await tempo(message)
 
-    if message.author.id == bot.user.id: ##GARUN ID
+    if message.author.id == bot.user.id:
         return await reaction(message)
-    
-    
+
+
 @bot.event
 async def on_reaction_add(reaction, user):
     if reaction.message.author.id == bot.user.id:
-        print(reaction)
-        print(user)
-        
+        return await check_reactions(reaction, user, 1)
+
+@bot.event
+async def on_reaction_remove(reaction, user):
+    if reaction.message.author.id == bot.user.id:
+        return await check_reactions(reaction, user, 2)
+
 @bot.event
 async def on_message_delete(message):
     if message.author.id == bot.user.id:
-        for embed in message.embeds:
-            content = embed.to_dict()
-            status = content["fields"][0]["value"]
-            
-            if status == "*Scrobbling...!*":
-                artist = content["fields"][1]["value"]
-                track = content["fields"][2]["value"]
-                
-                timestamp = int(time.time())
-
-                scrobblers = get_scrobblers()
-
-                if len(scrobblers) > 0:
-                    return await message.channel.send(embed=nowPlaying_and_Scrobble(scrobblers, artist, track, timestamp, 2),
-                                                      delete_after=60)
+        return await scrobble_track(message)

@@ -80,16 +80,6 @@ async def scrobble(message):
     return await message.channel.send(embed=embed)
 
 
-async def reaction(message):
-    for embed in message.embeds:
-        content = embed.to_dict()
-        status = content["fields"][0]["value"]
-
-        if status == "*Scrobbling...!*":
-            await message.add_reaction('❤️')
-            return await message.add_reaction('🚫')
-
-
 async def hydra(message):
     for embed in message.embeds:
         content = embed.to_dict()
@@ -135,3 +125,21 @@ async def tempo(message):
                                                       delete_after=60)
         except Exception as error:
             continue
+
+
+async def scrobble_track(message):
+    for embed in message.embeds:
+        content = embed.to_dict()
+        status = content["fields"][0]["value"]
+
+        if status == "*Scrobbling...!*":
+            artist = content["fields"][1]["value"]
+            track = content["fields"][2]["value"]
+
+            timestamp = int(time.time())
+
+            scrobblers = get_scrobblers()
+
+            if len(scrobblers) > 0:
+                return await message.channel.send(embed=nowPlaying_and_Scrobble(scrobblers, artist, track, timestamp, 2),
+                                                  delete_after=60)
