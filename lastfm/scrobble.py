@@ -5,7 +5,7 @@ import time
 from config.config import DB
 from utils.auth import check_auth_sessions
 from utils.database import get_scrobblers
-from utils.others import getEmbed, scrobbleTrack
+from utils.others import getEmbed, nowPlaying_and_Scrobble
 
 
 async def scrobble(message):
@@ -80,6 +80,16 @@ async def scrobble(message):
     return await message.channel.send(embed=embed)
 
 
+async def reaction(message):
+    for embed in message.embeds:
+        content = embed.to_dict()
+        status = content["fields"][0]["value"]
+
+        if status == "*Scrobbling...!*":
+            await message.add_reaction('❤️')
+            return await message.add_reaction('🚫')
+
+
 async def hydra(message):
     for embed in message.embeds:
         content = embed.to_dict()
@@ -98,7 +108,8 @@ async def hydra(message):
                 scrobblers = get_scrobblers()
 
                 if len(scrobblers) > 0:
-                    return await message.channel.send(embed=scrobbleTrack(scrobblers, artist, track, timestamp))
+                    return await message.channel.send(embed=nowPlaying_and_Scrobble(scrobblers, artist, track, timestamp, 1),
+                                                      delete_after=60)
         except Exception as error:
             continue
 
@@ -120,6 +131,7 @@ async def tempo(message):
                 scrobblers = get_scrobblers()
 
                 if len(scrobblers) > 0:
-                    return await message.channel.send(embed=scrobbleTrack(scrobblers, artist, track, timestamp))
+                    return await message.channel.send(embed=nowPlaying_and_Scrobble(scrobblers, artist, track, timestamp, 1),
+                                                      delete_after=60)
         except Exception as error:
             continue

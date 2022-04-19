@@ -4,7 +4,7 @@ from utils.auth import get_users
 
 @bot.event
 async def on_ready():
-    print(f'{bot.user} is online!')
+    print(f'{bot.user} ({bot.user.id}) is online!')
 
     if len(bot.guilds) != 0:
         print(f'\n{bot.user} está em '+str(len(bot.guilds))+' guildas:\n')

@@ -95,7 +95,7 @@ def get_trackImage(artist, track):
     return data["track"]["album"]["image"][3]["#text"]
 
 
-def scrobbleTrack(id_dict, artist, track, time):
+def nowPlaying_and_Scrobble(id_dict, artist, track, time, mode):
     if len(id_dict) > 0:
         done = []
         fail = []
@@ -106,23 +106,35 @@ def scrobbleTrack(id_dict, artist, track, time):
 
             sk = get_sk(id)
 
-            data = {"artist": artist,
-                    "track": track,
-                    "timestamp": str(time),
-                    "method": "track.scrobble",
-                    "api_key": API_KEY,
-                    "sk": sk}
+            if mode == 1:
+                data = {"artist": artist,
+                        "track": track,
+                        "method": "track.updateNowPlaying",
+                        "duration": "60",
+                        "api_key": API_KEY,
+                        "sk": sk}
 
-            sig = get_signature(data)
+                sig = get_signature(data)
 
-            data["timestamp"] = time
+            else:
+                data = {"artist": artist,
+                        "track": track,
+                        "method": "track.scrobble",
+                        "timestamp": str(time),
+                        "api_key": API_KEY,
+                        "sk": sk}
+
+                sig = get_signature(data)
+                data["timestamp"] = time
+
             data["api_sig"] = sig
 
             r = requests.post("http://ws.audioscrobbler.com/2.0/", data=data)
+            print(r.text)
 
             embed_last = getEmbed()
 
-            if 'accepted="1"' in r.text:
+            if 'status="ok"' in r.text:
                 done.append(acc)
             else:
                 fail.append(acc)
@@ -139,15 +151,21 @@ def scrobbleTrack(id_dict, artist, track, time):
         if done_acc != "| ":
             embed_last.set_thumbnail(url=get_trackImage(artist, track))
 
-            embed_last.add_field(name="Status", value="""
-            *Scrobble realizado com sucesso!*
-            """, inline=False)
+            if mode == 1:
+                embed_last.add_field(name="Status", value="""
+                *Scrobbling...!*
+                """, inline=False)
+            else:
+                embed_last.add_field(name="Status", value="""
+                *Scrobbling bem sucedido!*
+                """, inline=False)
 
             embed_last.add_field(name="Artista", value=artist, inline=False)
 
             embed_last.add_field(name="Música", value=track, inline=False)
 
-            embed_last.add_field(name="Ouvintes", value=done_acc, inline=False)
+            embed_last.add_field(
+                name="Scrobblers", value=done_acc, inline=False)
 
         if fail_acc != "| ":
             embed_last.add_field(name="Aviso", value="""
