@@ -1,8 +1,10 @@
 import discord
-from decouple import config
 
-bot = discord.Client()
+from config.config import INTENTS
 
-from config.db import c
+bot = discord.Client(intents=INTENTS)
+
 from lastfm import controllers
 from ready import ready
+
+from config.db import c
