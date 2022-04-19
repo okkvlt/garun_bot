@@ -66,8 +66,14 @@ async def scrobble_on_off(message):
 
 
 async def hydra(message):
+    if not message.embeds:
+        return
+    
     for embed in message.embeds:
         msg = embed.to_dict()
+        
+        if not msg:
+            return
 
     if not "title" in msg:
         return
@@ -92,8 +98,14 @@ async def hydra(message):
 
 
 async def tempo(message):
+    if not message.embeds:
+        return
+    
     for embed in message.embeds:
         msg = embed.to_dict()
+        
+        if not msg:
+            return
 
     if not "author" in msg:
         return
