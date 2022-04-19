@@ -1,29 +1,21 @@
 # Garun BOT
-### _Conexão com last.fm_
 
-BOT para auxiliar no scrobbling de músicas escutadas em canais de voz no discord, além de outras funções. É necessário a autenticação com a conta last.fm para que o modo scrobbling funcione.
+Um bot de discord para rastrear todas as músicas tocadas em canais de voz e vincular cada uma delas ao last.fm.
+
+## ▪ Como utilizar
+
+Ao utilizar o bot, é primeiro necessário vinculá-lo com sua conta do last.fm.
+
+Para que isso possa ser feito, basta digitar `$connect` e o bot enviará no seu privado todas as instruções.
+Após isso, basta ativar o modo scrobbling digitando `$scrobble on`. Caso queira desativar o modo scrobbling, basta digitar `$scrobble off`.
+
+Ademais, o comando `$help` mostrará todas as funções do bot.
 
 ## ▪ Bots Compatíveis
 
 - Hydra;
 - Tempo;
 - Em breve, mais...
-
-## ▪ Funções
-
-![help](https://i.imgur.com/VeXDebi.png)
-
-## ▪ Como conectar
-
-![01](https://i.imgur.com/N0v9OYc.png)
-
-![02](https://i.imgur.com/DGMcqAM.png)
-
-## ▪ Scrobbling
-
-![01](https://i.imgur.com/V38eiZl.png)
-
-![02](https://i.imgur.com/aQYFYhs.png)
 
 ## ▪ Próximos Updates
 
