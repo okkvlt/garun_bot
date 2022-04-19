@@ -11,7 +11,9 @@ Após isso, basta ativar o modo scrobbling digitando `$scrobble on`. Caso queira
 
 Ademais, o comando `$help` mostrará todas as funções do bot.
 
-![help](https://i.imgur.com/0ee3lTG.png)
+<div align="center">
+    <img src="https://i.imgur.com/0ee3lTG.png"></img>
+</div>
 
 ## ▪ Bots Compatíveis
 
