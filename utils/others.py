@@ -140,7 +140,9 @@ def nowPlayingScrobble(id_dict, artist, track, time, mode):
             sucess += acc + " | "
 
     embed = getEmbed()
-    embed.set_thumbnail(url=get_trackImage(artist, track))
+    
+    if get_trackImage(artist, track):
+        embed.set_thumbnail(url=get_trackImage(artist, track))
 
     if sucess != "| ":
         if mode == 1:
