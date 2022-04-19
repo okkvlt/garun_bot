@@ -1,5 +1,3 @@
-from hashlib import md5
-
 import discord
 import requests
 import xmltodict
@@ -148,7 +146,7 @@ def scrobbleTrack(id_dict, artist, track, time):
             embed_last.add_field(name="Artista", value=artist, inline=False)
 
             embed_last.add_field(name="Música", value=track, inline=False)
-            
+
             embed_last.add_field(name="Ouvintes", value=done_acc, inline=False)
 
         if fail_acc != "| ":

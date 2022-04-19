@@ -91,11 +91,33 @@ async def hydra(message):
                 description = content["description"]
 
                 track = re.search("-.+", description).group(0)[2:]
-                artist = description.replace(track,"")[:-3]
+                artist = description.replace(track, "")[:-3]
 
                 timestamp = int(time.time())
 
-                scrobblers = get_scrobblers()  # DICT
+                scrobblers = get_scrobblers()
+
+                if len(scrobblers) > 0:
+                    return await message.channel.send(embed=scrobbleTrack(scrobblers, artist, track, timestamp))
+        except Exception as error:
+            continue
+
+
+async def tempo(message):
+    for embed in message.embeds:
+        content = embed.to_dict()
+
+        try:
+            title = content["author"]["name"]
+
+            if "Playing: " in title:
+
+                track = re.search("-.+", title).group(0)[2:]
+                artist = title.replace(track, "")[9:-3]
+
+                timestamp = int(time.time())
+
+                scrobblers = get_scrobblers()
 
                 if len(scrobblers) > 0:
                     return await message.channel.send(embed=scrobbleTrack(scrobblers, artist, track, timestamp))
