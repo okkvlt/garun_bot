@@ -90,9 +90,10 @@ def get_trackImage(artist, track):
               "format": "json"}
 
     r = requests.get(api, params=params)
-    data = r.json()["track"]["album"]["image"][3]["#text"]
-
-    return data
+    data = r.json()["track"]
+    
+    if "album" in data:
+        return data["album"]["image"][3]["#text"]
 
 
 def nowPlayingScrobble(id_dict, artist, track, time, mode):
