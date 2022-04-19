@@ -1,11 +1,12 @@
 # Garun BOT
-## _Conexão com last.fm_
+### _Conexão com last.fm_
 
 BOT para auxiliar no scrobbling de músicas escutadas em canais de voz no discord, além de outras funções. É necessário a autenticação com a conta last.fm para que o modo scrobbling funcione.
 
 ## ▪ Bots Compatíveis
 
 - Hydra;
+- Tempo;
 - Em breve, mais...
 
 ## ▪ Funções
