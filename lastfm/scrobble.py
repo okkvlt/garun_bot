@@ -69,7 +69,9 @@ async def hydra(message):
     for embed in message.embeds:
         msg = embed.to_dict()
 
-
+    if not "title" in msg:
+        return
+    
     title = msg["title"]
 
     if title != "Now playing":
@@ -93,6 +95,9 @@ async def tempo(message):
     for embed in message.embeds:
         msg = embed.to_dict()
 
+    if not "author" in msg:
+        return
+    
     title = msg["author"]["name"]
 
     if not "Playing: " in title:
