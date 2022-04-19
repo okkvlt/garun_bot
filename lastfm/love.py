@@ -26,11 +26,13 @@ async def love_track(message, mode):
 
     author_id = message.author.id
 
-    if check_auth_sessions(author_id, 1) == 1:
-        try:
-            return await message.channel.send(embed=loveTrack(author_id, artist, track, mode))
-        except Exception as error:
-            embed.add_field(name="Status — Erro", value="""
-            **Erro:** *"""+str(error)+"""*
-            """, inline=False)
-            return await message.channel.send(embed=embed)
+    if check_auth_sessions(author_id, 1) != 1:
+        return
+    
+    try:
+        return await message.channel.send(embed=loveTrack(author_id, artist, track, mode))
+    except Exception as error:
+        embed.add_field(name="Status — Erro", value="""
+        **Erro:** *"""+str(error)+"""*
+        """, inline=False)
+        return await message.channel.send(embed=embed)
