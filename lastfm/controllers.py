@@ -10,6 +10,8 @@ from lastfm.scrobble import hydra, scrobble, scrobble_track, tempo
 from lastfm.top import top
 
 
+global_check_skiped = 0
+
 @bot.event
 async def on_message(message):
     if "$top_artists" in message.content:
@@ -47,6 +49,9 @@ async def on_message(message):
 
     if message.author.id == bot.user.id:
         return await reaction(message)
+    
+    if message.content == ".skip":
+        global_check_skiped = 1
 
 
 @bot.event
