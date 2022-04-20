@@ -25,8 +25,8 @@ O primeiro passo é clicar no link gerado pelo bot e permitir que o mesmo tenha 
 
 <div align="center">
     <div style="display: flex;">
-        <img src="https://i.imgur.com/xsXle63.png" height="300"></img>
-        <img src="https://i.imgur.com/7jEh9AF.png" height="300"></img>
+        <img src="https://i.imgur.com/xsXle63.png" width="550"></img>
+        <img src="https://i.imgur.com/7jEh9AF.png" width="550"></img>
     </div>
 </div>
 
@@ -35,7 +35,7 @@ O primeiro passo é clicar no link gerado pelo bot e permitir que o mesmo tenha 
 O segundo passo é digitar o comando gerado pelo bot e assim criar uma sessão com sua conta last.fm e salvar no banco de dados do bot.
 
 <div align="center">
-    <img src="https://i.imgur.com/O0s72Y4.png" height="300"></img>
+    <img src="https://i.imgur.com/O0s72Y4.png" width="550"></img>
 </div>
 
 ## ▪ Bots Compatíveis
