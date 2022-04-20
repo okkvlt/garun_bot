@@ -71,9 +71,6 @@ async def hydra(message):
     
     for embed in message.embeds:
         msg = embed.to_dict()
-        
-        if not msg:
-            return
 
     if not "title" in msg:
         return
@@ -89,12 +86,16 @@ async def hydra(message):
     artist = description.replace(track, "")[:-3]
 
     timestamp = int(time.time())
+    
+    members = message.author.voice.channel.members
 
-    scrobblers = get_scrobblers()
+    scrobblers = get_scrobblers(members, 1)
 
-    if len(scrobblers) > 0:
-        return await message.channel.send(embed=nowPlayingScrobble(scrobblers, artist, track, timestamp, 1),
-                                          delete_after=60)
+    if not scrobblers:
+        return
+    
+    return await message.channel.send(embed=nowPlayingScrobble(scrobblers, artist, track, timestamp, 1),
+                                      delete_after=60)
 
 
 async def tempo(message):
@@ -103,9 +104,6 @@ async def tempo(message):
     
     for embed in message.embeds:
         msg = embed.to_dict()
-        
-        if not msg:
-            return
 
     if not "author" in msg:
         return
@@ -119,15 +117,22 @@ async def tempo(message):
     artist = title.replace(track, "")[9:-3]
 
     timestamp = int(time.time())
+    
+    members = message.author.voice.channel.members
 
-    scrobblers = get_scrobblers()
-
-    if len(scrobblers) > 0:
-        return await message.channel.send(embed=nowPlayingScrobble(scrobblers, artist, track, timestamp, 1),
-                                          delete_after=60)
+    scrobblers = get_scrobblers(members, 1)
+    
+    if not scrobblers:
+        return
+    
+    return await message.channel.send(embed=nowPlayingScrobble(scrobblers, artist, track, timestamp, 1),
+                                      delete_after=60)
 
 
 async def scrobble_after_delete(message):
+    if not message.embeds:
+        return
+    
     for embed in message.embeds:
         msg = embed.to_dict()
     
@@ -136,13 +141,22 @@ async def scrobble_after_delete(message):
     if status != "*Scrobbling...!*":
         return
             
+    members = []
+    
     artist = msg["fields"][1]["value"]
     track = msg["fields"][2]["value"]
+    listeners = msg["fields"][3]["value"].split()
 
     timestamp = int(time.time())
+    
+    for m in listeners:
+        if m != '|':
+            members.append(m)
 
-    scrobblers = get_scrobblers()
+    scrobblers = get_scrobblers(members, 2)
 
-    if len(scrobblers) > 0:
-        return await message.channel.send(embed=nowPlayingScrobble(scrobblers, artist, track, timestamp, 2),
-                                          delete_after=60)
+    if not scrobblers:
+        return
+    
+    return await message.channel.send(embed=nowPlayingScrobble(scrobblers, artist, track, timestamp, 2),
+                                      delete_after=60)
