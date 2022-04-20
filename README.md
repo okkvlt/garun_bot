@@ -42,7 +42,7 @@ A opção de scrobbling pode ser ativada digitando `$scrobbling on` e desativada
 
 O bot permite que o usuário interrompa o scrobble de uma música reagindo à mensagem de scrobbling. Além do mais, o bot também permite que o usuário dê "amei" ou retire o "amei" em uma música também reagindo à mensagem de scrobbling. É claro que o "amei" registrado será encaminhado para a api do last.fm e executado na conta last.fm do usuário.
 
-O "amei" também pode ser dado ou retirado diretamente por comando e para qualquer música, basta digitar `$love [artista] - [música]` para dar o "amei" e `$unlove [artista] - [música]` para retirar o amei. Um exemplo disso seria `$love Giles Corey - Blackest Bile` ou `$unlove Yung Lean - Ginseng Strip 2002`.
+O "amei" também pode ser dado ou retirado diretamente por comando e para qualquer música, basta digitar `$love [artista] - [música]` para dar o "amei" e `$unlove [artista] - [música]` para retirar o "amei". Um exemplo disso seria `$love Giles Corey - Blackest Bile` ou `$unlove Yung Lean - Ginseng Strip 2002`.
 
 ## ▪ Bots Compatíveis
 
@@ -58,11 +58,11 @@ O "amei" também pode ser dado ou retirado diretamente por comando e para qualqu
 
 ## ▪ Charts e Ranks
 
-O bot também conta com a opção de gerar um rank com os artistas ou albums mais escutados por um determinado user. Essa opção pode especificar o prazo (por exemplo, nos últimos 7 dias) e o tamanho do rank (por exemplo, top 10).
+O bot também conta com a opção de gerar um rank com os artistas ou albums mais escutados por um determinado usuário. Essa opção pode especificar o prazo (por exemplo, nos últimos 7 dias) e o tamanho do rank (por exemplo, top 10).
 
 A syntax para isso é `$top_artists (user) (n) (overall/7day/1month/12month)` para um rank de artistas e `$top_albums (user) (n) (overall/7day/1month/12month)` para um rank de albums.
 
-Exemplo: `$top_artists ruan_1337 15 overall`. Este comando retornará o top _15_ artistas escutados pelo usuário _ruan\_1337_ desde a criação de sua conta (_overall_).
+Exemplo: `$top_artists ruan_1337 15 overall`. Este comando retornará o top _15_ artistas mais escutados pelo usuário _ruan\_1337_ desde a criação de sua conta (_overall_).
 
 ## ▪ Demonstração
 
