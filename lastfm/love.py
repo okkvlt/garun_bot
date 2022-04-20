@@ -27,8 +27,15 @@ async def love_track(message, mode):
     author_id = message.author.id
 
     if check_auth_sessions(author_id, 1) != 1:
-        return
-    
+        embed = getEmbed()
+
+        embed.add_field(name="Status",
+                        value="É preciso estar autenticado para utilizar essa função.",
+                        inline=False)
+
+        return await message.channel.send(embed=embed,
+                                          delete_after=15)
+
     try:
         return await message.channel.send(embed=loveTrack(author_id, artist, track, mode), delete_after=15)
     except Exception as error:

@@ -71,13 +71,14 @@ def loveTrack(id, artist, track, mode):
     embed.set_thumbnail(url=get_trackImage(artist, track))
 
     if mode == 1:
-        embed.add_field(name="Status", value="""
-        *Você amou **'"""+track+"""'** de **'"""+artist+"""'** com sucesso!*
-        """, inline=False)
+        embed.add_field(name="Status",
+                        value="*Você amou **'"+track+"'** de **'"+artist+"'** com sucesso!*",
+                        inline=False)
     else:
-        embed.add_field(name="Status", value="""
-        *Você retirou seu 'amei' de **'"""+track+"""'** de **'"""+artist+"""'** com sucesso!*
-        """, inline=False)
+        embed.add_field(name="Status",
+                        value="*Você retirou seu 'amei' de **'"+track +
+                        "'** de **'"+artist+"'** com sucesso!*",
+                        inline=False)
 
     return embed
 
@@ -91,7 +92,7 @@ def get_trackImage(artist, track):
 
     r = requests.get(api, params=params)
     data = r.json()["track"]
-    
+
     if "album" in data:
         return data["album"]["image"][3]["#text"]
 
@@ -140,23 +141,36 @@ def nowPlayingScrobble(id_dict, artist, track, time, mode):
             sucess += acc + " | "
 
     embed = getEmbed()
-    
+
     if get_trackImage(artist, track):
-        embed.set_thumbnail(url=get_trackImage(artist, track))
+        embed.set_thumbnail(url=get_trackImage(artist,
+                                               track))
 
     if sucess != "| ":
         if mode == 1:
-            embed.add_field(name="Status", value="*Scrobbling...!*", inline=False)
+            embed.add_field(name="Status",
+                            value="*Scrobbling...!*",
+                            inline=False)
         else:
-            embed.add_field(name="Status", value="*Scrobbling bem sucedido!*", inline=False)
+            embed.add_field(name="Status",
+                            value="*Scrobbling bem sucedido!*",
+                            inline=False)
 
-        embed.add_field(name="Artista", value=artist, inline=False)
+        embed.add_field(name="Artista",
+                        value=artist,
+                        inline=False)
 
-        embed.add_field(name="Música", value=track, inline=False)
+        embed.add_field(name="Música",
+                        value=track,
+                        inline=False)
 
-        embed.add_field(name="Scrobblers", value=sucess, inline=False)
+        embed.add_field(name="Scrobblers",
+                        value=sucess,
+                        inline=False)
 
     if fail != "| ":
-        embed.add_field(name="Fail", value=fail, inline=False)
+        embed.add_field(name="Fail",
+                        value=fail,
+                        inline=False)
 
     return embed

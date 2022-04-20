@@ -1,5 +1,6 @@
 
 from config.bot import bot
+from utils.auth import check_auth_sessions
 from utils.others import get_trackImage, getEmbed, loveTrack
 
 
@@ -20,6 +21,17 @@ async def check_reactions(reaction, user, mode):
         return
 
     msg = reaction.message
+
+    if check_auth_sessions(user.id, 1) != 1:
+        embed = getEmbed()
+
+        embed.add_field(name="Status",
+                        value="É preciso estar autenticado para utilizar essa função.",
+                        inline=False)
+
+        return await msg.channel.send(embed=embed,
+                                      delete_after=15)
+
     for embed in msg.embeds:
         fields = embed.to_dict()
         status = fields["fields"][0]["value"]
@@ -31,19 +43,30 @@ async def check_reactions(reaction, user, mode):
     track = fields["fields"][2]["value"]
 
     if str(reaction) == '❤️':
-        return await msg.channel.send(embed=loveTrack(user.id, artist, track, mode), delete_after=15)
+        return await msg.channel.send(embed=loveTrack(user.id,
+                                                      artist,
+                                                      track,
+                                                      mode),
+                                      delete_after=15)
 
     if str(reaction) == '🚫':
         embed = getEmbed()
 
-        embed.set_thumbnail(url=get_trackImage(artist, track))
+        if get_trackImage(artist,track):
+            embed.set_thumbnail(url=get_trackImage(artist,
+                                                   track))
 
-        embed.add_field(name="Status", value="""
-                    *Scrobbling interrompido!*
-                    """, inline=False)
+        embed.add_field(name="Status",
+                        value="*Scrobbling interrompido!*",
+                        inline=False)
 
-        embed.add_field(name="Artista", value=artist, inline=False)
+        embed.add_field(name="Artista", 
+                        value=artist, 
+                        inline=False)
 
-        embed.add_field(name="Música", value=track, inline=False)
+        embed.add_field(name="Música", 
+                        value=track, 
+                        inline=False)
 
-        return await msg.edit(embed=embed, delete_after=15)
+        return await msg.edit(embed=embed,
+                              delete_after=15)
