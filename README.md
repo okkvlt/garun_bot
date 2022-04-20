@@ -15,6 +15,29 @@ Ademais, o comando `$help` mostrará todas as funções do bot.
     <img src="https://i.imgur.com/0ee3lTG.png"></img>
 </div>
 
+## ▪ Conexão
+
+Como dito, para se conectar, basta digitar `$connect` em qualquer canal de texto [desde que o BOT tenha permissão para leitura] ou na DM.
+
+### ▪ Passo 01
+
+O primeiro passo é clicar no link gerado pelo bot e permitir que o mesmo tenha acesso à sua conta last.fm.
+
+<div align="center">
+    <div style="display: flex;">
+        <img src="https://i.imgur.com/xsXle63.png" height="300"></img>
+        <img src="https://i.imgur.com/7jEh9AF.png" height="300"></img>
+    </div>
+</div>
+
+### ▪ Passo 02
+
+O segundo passo é digitar o comando gerado pelo bot e assim criar uma sessão com sua conta last.fm e salvar no banco de dados do bot.
+
+<div align="center">
+    <img src="https://i.imgur.com/O0s72Y4.png" height="300"></img>
+</div>
+
 ## ▪ Bots Compatíveis
 
 - Hydra;
