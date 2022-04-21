@@ -54,10 +54,10 @@ async def collage(message):
 
     fail.add_field(name="Params:",
                    value="""
-                    • **Modo:** *'albums', 'artists'*;
-                    • **User:** *last.fm username*;
-                    • **NxN:** *'3x3', '4x4', '5x5', '10x10'*;
-                    • **Período:** *'7day', '1month', '12month', 'overall'*;
+                    • **[modo]:** *'albums', 'artists'*;
+                    • **[user]:** *last.fm username*;
+                    • **[NxN]:** *'3x3', '4x4', '5x5', '10x10'*;
+                    • **[período]:** *'7day', '1month', '12month', 'overall'*;
                    """,
                    inline=False)
 

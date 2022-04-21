@@ -17,14 +17,18 @@ async def top(message):
     
     fail.add_field(name="Params:",
                    value="""
-                    • **Modo:** *'albums', 'artists'*;
-                    • **User:** *last.fm username*;
-                    • **N:** *top [n]*;
-                    • **Período:** *'7day', '1month', '12month', 'overall'*;
+                    • **[modo]:** *'albums', 'artists'*;
+                    • **[user]:** *last.fm username*;
+                    • **[n]:** *top [n]*;
+                    • **[período]:** *'7day', '1month', '12month', 'overall'*;
                    """,
                    inline=False)
 
-    modes = ["albums", "artists"]
+    modes = {
+        "artists": 1,
+        "albums": 2
+    }
+    
     periods = ["overall", "7day", "1month", "12month"]
 
     if len(data) != 5:
@@ -41,10 +45,7 @@ async def top(message):
     if not period in periods:
         return await message.channel.send(embed=fail)
 
-    if mode == "artists":
-        r = get_top(user, size, period, 1)
-    else:
-        r = get_top(user, size, period, 2)
+    r = get_top(user, size, period, modes[mode])
 
     if "error" in r:
         return
