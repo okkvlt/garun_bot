@@ -73,7 +73,7 @@ O bot também conta com a opção de gerar um rank em formato de texto com os ar
 ## ▪ Demonstração
 
 <div align="center">
-    <img src="https://i.imgur.com/podJgp4.png" width="700"></img>
+    <img src="https://i.imgur.com/FoQNOfQ.png" width="600"></img>
 </div>
 
 ## ▪ Colagem
