@@ -56,18 +56,48 @@ O "amei" também pode ser dado ou retirado diretamente por comando e para qualqu
     <img src="https://i.imgur.com/38otbWb.png" width="700"></img>
 </div>
 
-## ▪ Charts e Ranks
+## ▪ Ranks
 
-O bot também conta com a opção de gerar um rank com os artistas ou albums mais escutados por um determinado usuário. Essa opção pode especificar o prazo (por exemplo, nos últimos 7 dias) e o tamanho do rank (por exemplo, top 10).
+O bot também conta com a opção de gerar um rank em formato de texto com os artistas ou albums mais escutados por um determinado usuário. Essa opção pode especificar o prazo (por exemplo, nos últimos 7 dias) e o tamanho do rank (por exemplo, top 10). 
 
-A syntax para isso é `$top_artists (user) (n) (overall/7day/1month/12month)` para um rank de artistas e `$top_albums (user) (n) (overall/7day/1month/12month)` para um rank de albums.
+### Syntax:
+- _`$top [modo] [user] [n] [período]`_.
+    - [modo]: _"artists"_, _"albums"_;
+    - [user]: _last.fm username_;
+    - [NxN]: _top \[n\]_;
+    - [período]: _7day, 1month, 12month, overall_.
 
-Exemplo: `$top_artists ruan_1337 15 overall`. Este comando retornará o top _15_ artistas mais escutados pelo usuário _ruan\_1337_ desde a criação de sua conta (_overall_).
+### Exemplo: 
+- _`$top artists ruan_1337 15 overall`_: Este comando retornará o top _15_ _artistas_ mais escutados pelo usuário _ruan\_1337_ desde a criação de sua conta (_overall_).
 
 ## ▪ Demonstração
 
 <div align="center">
     <img src="https://i.imgur.com/podJgp4.png" width="700"></img>
+</div>
+
+## ▪ Colagem
+
+Apesar de conter uma opção que gera um rank em formato de texto com os albums ou artistas mais escutados por um determinado usuário em um determinado período de tempo, o bot também possui uma função capaz de gerar o mesmo rank em formato de imagem/colagem. O código para a geração das colagens foi escrito por [@iShi0n](https://github.com/iShi0n).
+
+### Syntax:
+- _`$collage [modo] [user] [NxN] [período]`_.
+    - [modo]: _"artists"_, _"albums"_;
+    - [user]: _last.fm username_;
+    - [NxN]: _3x3, 4x4, 5x5, 10x10_;
+    - [período]: _7day, 1month, 12month, overall_.
+
+### Exemplos: 
+- `$collage albums ruan_1337 5x5 7day`: Gera uma colagem de tamanho _5x5_ com os _albums_ mais escutados por _ruan\_1337_ nos últimos 7 dias _(7day)_.
+- `$collage artists ruan_1337 10x10 overall`: Gera uma colagem de tamanho _10x10_ com os _artistas_ mais escutados por _ruan\_1337_ desde a criação de sua conta _(overall)_.
+
+## ▪ Demonstração
+
+<div align="center">
+    <div style="display: flex;">
+        <img src="https://i.imgur.com/sIQy5GA.png" width="600"></img>
+        <img src="https://i.imgur.com/XYbabQS.png" width="600"></img>
+    </div>
 </div>
 
 ## ▪ Próximos Updates
