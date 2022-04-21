@@ -35,20 +35,20 @@ async def on_message(message):
 
     author = message.author.id
 
-    if message.content:
-        msg = message.content.split()
-        command = msg[0]
-
-        if not command in controllers["content"].keys():
-            return
-
-        control_function = controllers["content"][command]
+    if author in controllers["author"].keys():
+        control_function = controllers["author"][author]
         return await control_function(message)
 
-    if not author in controllers["author"].keys():
+    if not message.content:
         return
 
-    control_function = controllers["author"][author]
+    msg = message.content.split()
+    command = msg[0]
+
+    if not command in controllers["content"].keys():
+        return
+
+    control_function = controllers["content"][command]
     return await control_function(message)
 
 
