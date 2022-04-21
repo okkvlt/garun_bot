@@ -4,36 +4,45 @@ from utils.others import getEmbed
 async def help_message(message):
     embed = getEmbed()
 
-    embed.add_field(name="Comandos de LAST.FM", value="""
-• `$connect`
-• *Vincula o bot à sua conta do last.fm.*
+    embed.add_field(name="Comandos não-Conectados", value="""
+• **`$top [modo] [user] [n] [período]`**
+• *Mostra o top [n] artistas/artistas mais escutados pelo usuário [user] no período indicado.*
 
-• `$top_artists (user) (n) (overall/7day/1month/12month)`
-• *Mostra o top (n) artistas do usuário (user) no(s) último(s) (overall/7day/1month/12month).*
+• **Modo:** *'albums', 'artists'*;
+• **User:** *last.fm username*;
+• **N:** *top [n]*;
+• **Período:** *'7day', '1month', '12month', 'overall'*;
 
-• `$top_albums (user) (n) (overall/7day/1month/12month)`
-• *Mostra o top (n) albums do usuário no(s) último(s) (overall/7day/1month/12month).*
+• **Exemplo:** *`$top albums ruan_1337 10 7day`*.
 
-• `$scrobble (on/off)` 
+• **`$collage [modo] [user] [NxN] [período]`**
+• *Gera uma colagem de tamanho [n x n] com os artistas, albums ou músicas mais escutados no período indicado.*
+
+• **Modo:** *'albums', 'artists'*;
+• **User:** *last.fm username*;
+• **NxN:** *'3x3', '4x4', '5x5', '10x10'*;
+• **Período:** *'7day', '1month', '12month', 'overall'*;
+
+• **Exemplo:** *`$collage albums ruan_1337 5x5 overall`*.
+""", inline=False)
+    
+    embed.add_field(name="Comandos Conectados", value="""
+• `$scrobble [on/off]` 
 • *Ativa ou desativa os scrobbles.*
 
-• `$edit`
-• *Edita os dados do scrobble em execução.* [não implementado]
-
-• `$stop`
-• *Interrompe o scrobble em execução.* [não implementado]
-
-• `$love "(artist) - (track)"`
+• `$love [artist] - [track]`
 • *Dá "amei" na música informada.*
 
-• `$unlove "(artist) - (track)"` 
+• `$unlove [artist] - [track]` 
 • *Retira o "amei" da música informada.*
-
-• `$collage (artists/albums) (7/30)`
-• *Gera uma colagem com os artistas ou albums mais ouvidos nos últimos sete ou trinta dias.* [não implementado]
+""", inline=False)
+    
+    embed.add_field(name="Comandos de Conexão", value="""
+• `$connect`
+• *Vincula o bot à sua conta do last.fm.*
 
 • `$disconnect`
 • *Desconecta a conta.*
 """, inline=False)
 
-    await message.channel.send(embed=embed)
+    return await message.channel.send(embed=embed)

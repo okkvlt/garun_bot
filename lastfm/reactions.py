@@ -5,6 +5,9 @@ from utils.others import get_trackImage, getEmbed, loveTrack
 
 
 async def reaction(message):
+    if not message.embeds:
+        return
+    
     for embed in message.embeds:
         content = embed.to_dict()
         status = content["fields"][0]["value"]

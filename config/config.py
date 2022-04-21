@@ -1,5 +1,6 @@
 import discord
 from decouple import config
+from collage.collage import LastFM
 
 # discord
 TOKEN = config('BOT_TOKEN')
@@ -15,8 +16,11 @@ DB = "config/sessions.db"
 HYDRA = 547905866255433758
 TEMPO = 736888501026422855
 
-#intents
+# intents
 INTENTS = discord.Intents.default()
 
 INTENTS.members = True
 INTENTS.reactions = True
+
+# collage
+COLLAGE = LastFM(API_KEY)

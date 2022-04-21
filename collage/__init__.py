@@ -1,0 +1,1 @@
+from .collage import LastFM

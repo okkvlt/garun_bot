@@ -2,10 +2,12 @@ from config.bot import bot
 from config.config import HYDRA, TEMPO
 
 from lastfm.auth import auth, disconnect, session
+from lastfm.collage import collage
 from lastfm.help import help_message
 from lastfm.love import love_track
 from lastfm.reactions import check_reactions, reaction
-from lastfm.scrobble import hydra, scrobble_after_delete, scrobble_on_off, tempo
+from lastfm.scrobble import (hydra, scrobble_after_delete, scrobble_on_off,
+                             tempo)
 from lastfm.top import top
 
 
@@ -46,6 +48,9 @@ async def on_message(message):
 
     if message.author.id == bot.user.id:
         return await reaction(message)
+    
+    if "$collage " in message.content:
+        return await collage(message)
 
 
 @bot.event
