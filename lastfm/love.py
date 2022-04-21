@@ -4,42 +4,58 @@ from utils.auth import check_auth_sessions
 from utils.others import getEmbed, loveTrack
 
 
-async def love_track(message, mode):
-    data = message.content.split()
-    embed = getEmbed()
+async def love_track(message):
+    msg = message.content
+    data = msg.split()
+    command = data[0]
 
-    if len(data) == 1:
-        embed.add_field(name="Status — Erro", value="""
-        *É necessário informar a música!*
-        **Exemplo: ** *`$love "artist - track"`* ou *`$unlove "artist - track"`*
-        """, inline=False)
-        return await message.channel.send(embed=embed)
+    modes = {
+        "$love": 1,
+        "$unlove": 2
+    }
 
-    temp = data[1:]
-    music = ""
+    fail = getEmbed()
 
-    for x in temp:
-        music += x+" "
+    fail.add_field(name="Status",
+                   value="*Formato inválido!*",
+                   inline=False)
+
+    fail.add_field(name="Syntax:",
+                   value="""
+                   *`$love [artista] - [música]`*
+                   *`$unlove [artista] - [música]`*
+                   """,
+                   inline=False)
+
+    if len(data) < 4 and '-' not in data:
+        return await message.channel.send(embed=fail)
+
+    music = msg.replace(data[0], "")[1:]
 
     artist = re.search(".+-", music).group(0)[:-2]
-    track = re.search("-.+", music).group(0)[2:-1]
+    track = re.search("-.+", music).group(0)[2:]
 
     author_id = message.author.id
 
     if check_auth_sessions(author_id, 1) != 1:
-        embed = getEmbed()
+        auth = getEmbed()
 
-        embed.add_field(name="Status",
-                        value="É preciso estar autenticado para utilizar essa função.",
-                        inline=False)
+        auth.add_field(name="Status",
+                       value="É preciso estar autenticado para utilizar essa função.",
+                       inline=False)
 
-        return await message.channel.send(embed=embed,
+        return await message.channel.send(embed=auth,
                                           delete_after=15)
 
     try:
-        return await message.channel.send(embed=loveTrack(author_id, artist, track, mode), delete_after=15)
+        return await message.channel.send(embed=loveTrack(author_id,
+                                                          artist,
+                                                          track,
+                                                          modes[command]),
+                                          delete_after=15)
     except Exception as error:
-        embed.add_field(name="Status — Erro", value="""
-        **Erro:** *"""+str(error)+"""*
-        """, inline=False)
-        return await message.channel.send(embed=embed)
+        fail = getEmbed()
+        fail.add_field(name="Status — Erro",
+                       value="**Erro:** *"+str(error)+"*",
+                       inline=False)
+        return await message.channel.send(embed=fail)

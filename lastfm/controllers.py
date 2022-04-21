@@ -13,41 +13,43 @@ from lastfm.top import top
 
 @bot.event
 async def on_message(message):
-    if "$top" in message.content:
-        return await top(message)
+    controllers = {
+        "content": {
+            "$top": top,
+            "$connect": auth,
+            "$session": session,
+            "$scrobble": scrobble_on_off,
+            "$disconnect": disconnect,
+            "$help": help_message,
+            "$love": love_track,
+            "$unlove": love_track,
+            "$collage": collage
+        },
 
-    if message.content == "$connect":
-        return await auth(message)
+        "author": {
+            HYDRA: hydra,
+            TEMPO: tempo,
+            bot.user.id: reaction
+        }
+    }
 
-    if "$session" in message.content:
-        return await session(message)
+    author = message.author.id
 
-    if "$scrobble" in message.content:
-        return await scrobble_on_off(message)
+    if message.content:
+        msg = message.content.split()
+        command = msg[0]
 
-    if message.content == "$disconnect":
-        return await disconnect(message)
+        if not command in controllers["content"].keys():
+            return
 
-    if message.author.id == HYDRA:
-        return await hydra(message)
+        control_function = controllers["content"][command]
+        return await control_function(message)
 
-    if message.content == "$help":
-        return await help_message(message)
+    if not author in controllers["author"].keys():
+        return
 
-    if "$love" in message.content:
-        return await love_track(message, 1)
-
-    if "$unlove" in message.content:
-        return await love_track(message, 2)
-
-    if message.author.id == TEMPO:
-        return await tempo(message)
-
-    if message.author.id == bot.user.id:
-        return await reaction(message)
-    
-    if "$collage" in message.content:
-        return await collage(message)
+    control_function = controllers["author"][author]
+    return await control_function(message)
 
 
 @bot.event
