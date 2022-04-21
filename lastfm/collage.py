@@ -1,5 +1,3 @@
-# $collage (artists/albums/tracks) (user) (n) (overall/7day/1month/12month)
-
 import io
 
 import discord
@@ -22,7 +20,16 @@ async def collage(message):
                    inline=False)
 
     fail.add_field(name="Syntax:",
-                   value="*`$collage (artists/albums/tracks) (user) (n) (overall/7day/1month/12month)`*",
+                   value="*`$collage [modo] [user] [NxN] [período]`*",
+                   inline=False)
+    
+    fail.add_field(name="Params:",
+                   value="""
+                    • **Modo:** *'albums', 'artists'*;
+                    • **User:** *last.fm username*;
+                    • **NxN:** *'3x3', '4x4', '5x5', '10x10'*;
+                    • **Período:** *'7day', '1month', '12month', 'overall'*;
+                   """,
                    inline=False)
 
     if len(data) != 5:

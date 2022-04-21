@@ -13,11 +13,8 @@ from lastfm.top import top
 
 @bot.event
 async def on_message(message):
-    if "$top_artists" in message.content:
-        return await top(message, 2)
-
-    if "$top_albums" in message.content:
-        return await top(message, 1)
+    if "$top" in message.content:
+        return await top(message)
 
     if message.content == "$connect":
         return await auth(message)
@@ -49,7 +46,7 @@ async def on_message(message):
     if message.author.id == bot.user.id:
         return await reaction(message)
     
-    if "$collage " in message.content:
+    if "$collage" in message.content:
         return await collage(message)
 
 

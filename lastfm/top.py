@@ -1,79 +1,90 @@
 from utils.others import get_top, getEmbed
 
 
-async def top(message, id):
+async def top(message):
     data = message.content.split()
 
-    embed_last = getEmbed()
+    fail = getEmbed()
+    sucess = getEmbed()
 
-    if len(data) != 4:
-        embed_last.add_field(name="Status", value="""
-        *Formato inválido!*
-        """, inline=False)
+    fail.add_field(name="Status",
+                   value="*Formato inválido!*",
+                   inline=False)
 
-        if id == 1:
-            embed_last.add_field(name="Utilize:", value="""
-            `$top_albums (user) (n) (overall/7days/1month/12month)`
-            """, inline=False)
-        else:
-            embed_last.add_field(name="Utilize:", value="""
-            `$top_artists (user) (n) (overall/7days/1month/12month)`
-            """, inline=False)
+    fail.add_field(name="Syntax:",
+                   value="*`$top [modo] [user] [n] [período]`*",
+                   inline=False)
+    
+    fail.add_field(name="Params:",
+                   value="""
+                    • **Modo:** *'albums', 'artists'*;
+                    • **User:** *last.fm username*;
+                    • **N:** *top [n]*;
+                    • **Período:** *'7day', '1month', '12month', 'overall'*;
+                   """,
+                   inline=False)
 
-        embed_last.add_field(name="Parâmetros:", value="""
-        **user:** *usuário.*
-        **n:** *top (n).*
-        **(overall/7day/1month/12month):** *período de tempo.*
-        """, inline=False)
+    modes = ["albums", "artists"]
+    periods = ["overall", "7day", "1month", "12month"]
 
-        return await message.channel.send(embed=embed_last)
+    if len(data) != 5:
+        return await message.channel.send(embed=fail)
 
-    user = data[1]
-    n = data[2]
-    time = data[3]
+    mode = data[1]
+    user = data[2]
+    size = data[3]
+    period = data[4]
 
-    if id == 1:
-        r = get_top(user, n, time, 2)
+    if not mode in modes:
+        return await message.channel.send(embed=fail)
+
+    if not period in periods:
+        return await message.channel.send(embed=fail)
+
+    if mode == "artists":
+        r = get_top(user, size, period, 1)
     else:
-        r = get_top(user, n, time, 1)
+        r = get_top(user, size, period, 2)
 
-    if not "error" in r:
-        if id == 1:
-            top = r["topalbums"]["album"]
+    if "error" in r:
+        return
 
-            embed_last.set_author(name="Garun — Top "+n+" albums",
-                                  icon_url='https://i.imgur.com/59qD9SY.jpg')
+    if mode == "albums":
+        top = r["topalbums"]["album"]
 
-        else:
-            top = r["topartists"]["artist"]
+        sucess.set_author(name="Garun — Top "+size+" albums",
+                          icon_url='https://i.imgur.com/59qD9SY.jpg')
 
-            embed_last.set_author(name="Garun — Top "+n+" artistas",
-                                  icon_url='https://i.imgur.com/59qD9SY.jpg')
+    else:
+        top = r["topartists"]["artist"]
 
-        value = ""
+        sucess.set_author(name="Garun — Top "+size+" artistas",
+                          icon_url='https://i.imgur.com/59qD9SY.jpg')
 
-        if id == 1:
-            for album in top:
-                value += "**"+album["@attr"]["rank"]+"º**: *"+album["artist"]["name"]+" — " + \
-                    album["name"]+" ("+album["playcount"]+" plays).*\n"
-        else:
-            for artist in top:
-                value += "**"+artist["@attr"]["rank"]+"º** — *" + \
-                    artist["name"]+" ("+artist["playcount"]+" plays).*\n"
+    if not top:
+        return
 
-        embed_last.add_field(
-            name="Usuário: ", value="`"+user+"`", inline=False)
+    value = ""
 
-        if id == 1:
-            embed_last.add_field(name="Top "+str(n) +
-                                 " albums", value=value, inline=False)
-        else:
-            embed_last.add_field(name="Top "+str(n) +
-                                 " artistas", value=value, inline=False)
+    if mode == "albums":
+        for album in top:
+            value += "**"+album["@attr"]["rank"]+"º**: *"+album["artist"]["name"] + \
+                " — " + album["name"]+" ("+album["playcount"]+" plays).*\n"
 
-        return await message.channel.send(embed=embed_last)
+    else:
+        for artist in top:
+            value += "**"+artist["@attr"]["rank"]+"º** — *" + \
+                artist["name"]+" ("+artist["playcount"]+" plays).*\n"
 
-    embed_last.add_field(name="Status", value="Erro: " +
-                         str(r["error"])+"\nMensagem: `"+r["message"]+"`", inline=False)
+    sucess.add_field(name="Usuário: ",
+                     value="`"+user+"`",
+                     inline=False)
 
-    return await message.channel.send(embed=embed_last)
+    if mode == "albums":
+        sucess.add_field(name="Top " + str(size) +
+                         " albums", value=value, inline=False)
+    else:
+        sucess.add_field(name="Top " + str(size) +
+                         " artistas", value=value, inline=False)
+
+    return await message.channel.send(embed=sucess)
