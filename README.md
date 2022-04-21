@@ -64,7 +64,7 @@ O bot também conta com a opção de gerar um rank em formato de texto com os ar
 - _`$top [modo] [user] [n] [período]`_.
     - [modo]: _"artists"_, _"albums"_;
     - [user]: _last.fm username_;
-    - [NxN]: _top \[n\]_;
+    - [n]: _top \[n\]_;
     - [período]: _7day, 1month, 12month, overall_.
 
 ### Exemplo: 
