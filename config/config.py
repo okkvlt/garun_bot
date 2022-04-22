@@ -15,6 +15,7 @@ DB = "config/sessions.db"
 # bots
 HYDRA = 547905866255433758
 TEMPO = 736888501026422855
+CHIP = 614109280508968980
 
 # intents
 INTENTS = discord.Intents.default()

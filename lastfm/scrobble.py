@@ -146,6 +146,46 @@ async def tempo(message):
                                       delete_after=60)
 
 
+async def chip(message):
+    if not message.embeds:
+        return
+
+    for embed in message.embeds:
+        msg = embed.to_dict()
+
+    if not "author" in msg:
+        return
+
+    status = msg["author"]["name"]
+
+    if status != "|  Now playing":
+        return
+
+    description = msg["description"]
+
+    regex = re.findall("\[[\w?%$#@!*()+ \.&-:~|\\|\,\'\";\/\{\}~^`´]+\]",
+                       description)
+
+    track = regex[0][1:-1]
+    artist = regex[1][1:-1]
+
+    timestamp = int(time.time())
+
+    members = message.author.voice.channel.members
+
+    scrobblers = get_scrobblers(members, 1)
+
+    if not scrobblers:
+        return
+
+    return await message.channel.send(embed=nowPlayingScrobble(scrobblers,
+                                                               artist,
+                                                               track,
+                                                               timestamp,
+                                                               1),
+                                      delete_after=60)
+
+
 async def scrobble_after_delete(message):
     if not message.embeds:
         return
