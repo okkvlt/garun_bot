@@ -48,6 +48,7 @@ O "amei" também pode ser dado ou retirado diretamente por comando e para qualqu
 
 - Hydra;
 - Tempo;
+- Chip;
 - Em breve, mais...
 
 ## ▪ Demonstração
