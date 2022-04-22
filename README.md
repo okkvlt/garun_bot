@@ -38,7 +38,7 @@ O segundo passo é digitar o comando gerado pelo bot e assim criar uma sessão c
 
 ## ▪ Scrobbling
 
-A opção de scrobbling pode ser ativada digitando `$scrobbling on` e desativada digitando `$scrobbling off`.
+A opção de scrobbling pode ser ativada digitando `$scrobble on` e desativada digitando `$scrobble off`.
 
 O bot permite que o usuário interrompa o scrobble de uma música reagindo à mensagem de scrobbling. Além do mais, o bot também permite que o usuário dê "amei" ou retire o "amei" em uma música também reagindo à mensagem de scrobbling. É claro que o "amei" registrado será encaminhado para a api do last.fm e executado na conta last.fm do usuário.
 
